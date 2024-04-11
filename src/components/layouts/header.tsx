@@ -85,7 +85,7 @@ export default function Header() {
 
           {!profile && !isLoadingProfile && !isReady && !isStarted && (
             <button
-              onClick={() => window.open(`${backend_url}/api/login/google`, '_self')}
+              onClick={() => window.open(`${backend_url}/api/login/google`, '_blank')}
               className="flex h-10 items-center space-x-2 rounded-md border-2 border-transparent bg-black/50 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base"
             >
               <span>Login</span>
