@@ -14,11 +14,11 @@ export default function Timer() {
 
   return (
     <div
-      className={`flex h-12 items-center space-x-3 pl-4 text-lg text-gray-200 ${robotoMono.className}`}
+      className={`flex h-12 items-center space-x-2.5 pl-3.5 text-gray-200 ${robotoMono.className}`}
     >
-      {isStarted && !isReady && (
+      {!isReady && isStarted && (
         <>
-          <TimerIcon className="h-5 w-5" />
+          <TimerIcon className="h-4 w-4" />
           <span>
             <GameTimer />
           </span>
@@ -26,7 +26,7 @@ export default function Timer() {
       )}
       {isReplayStarted && !isReplayReady && (
         <>
-          <TimerIcon className="h-5 w-5" />
+          <TimerIcon className="h-4 w-4" />
           <span>
             <ReplayTimer />
           </span>

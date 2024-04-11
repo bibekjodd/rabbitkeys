@@ -12,7 +12,7 @@ export default function BaseParagraph({
   isTypedIncorrect: boolean;
 }) {
   return (
-    <div className="select-none text-lg font-medium leading-8 text-black">
+    <div className="select-none text-lg font-medium leading-8 text-gray-900">
       {(paragraph?.text || '').split('').map((letter, i) => (
         <span
           key={i}

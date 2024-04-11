@@ -1,3 +1,4 @@
+import Footer from '@/components/layouts/footer';
 import Header from '@/components/layouts/header';
 import GlowingBackGround from '@/components/utils/glowing-background';
 import Invitation from '@/components/utils/invitation';
@@ -24,6 +25,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Workers />
           <Header />
           {children}
+          <Footer />
         </QueryProvider>
       </body>
     </html>

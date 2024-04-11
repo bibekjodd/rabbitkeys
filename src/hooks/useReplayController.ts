@@ -6,14 +6,16 @@ export const useReplayController = () => {
   const isReady = useReplayStore((state) => state.isReady);
 
   const keyboardController = useCallback((e: KeyboardEvent) => {
-    e.preventDefault();
     if (document.activeElement !== document.body) return;
     const { skipBackward, skipForward, pause, isPaused, play } = useReplayStore.getState();
     if (e.key === 'ArrowLeft') {
+      e.preventDefault();
       skipBackward();
     } else if (e.key === 'ArrowRight') {
+      e.preventDefault();
       skipForward();
     } else if (e.key === ' ') {
+      e.preventDefault();
       if (isPaused) play();
       else pause();
     }

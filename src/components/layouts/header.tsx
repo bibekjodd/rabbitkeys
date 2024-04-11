@@ -42,23 +42,21 @@ export default function Header() {
           </StartButton>
 
           <JoinTrackDialog>
-            <button className="flex h-10 items-center rounded-md border-2 border-transparent bg-black/30 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base">
-              <span>Join</span>
-              <span className="hidden lg:inline">Track</span>
+            <button className="flex h-10 items-center space-x-2 rounded-md border-2 border-transparent bg-black/30 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base">
+              <span>Join</span> <span className="hidden lg:inline">Track</span>
             </button>
           </JoinTrackDialog>
           <CreateTrackButton className="flex h-10 items-center rounded-md border-2 border-transparent bg-black/30 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base">
-            <span>Host</span>
-            <span className="hidden lg:inline">Race</span>
+            <span>Host</span> <span className="hidden lg:inline">Race</span>
           </CreateTrackButton>
 
           <InviteKickPlayerDialog>
-            <button className="flex h-10 items-center rounded-md border-2 border-transparent bg-black/30 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base">
-              Invite Players
+            <button className="flex h-10 items-center space-x-2 rounded-md border-2 border-transparent bg-black/30 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base">
+              <span>Invite</span> <span className="hidden lg:inline">Players</span>
             </button>
           </InviteKickPlayerDialog>
 
-          <LeaveTrackButton className="flex h-10 items-center rounded-md border-2 border-transparent bg-black/30 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base">
+          <LeaveTrackButton className="flex h-10 items-center space-x-2 rounded-md border-2 border-transparent bg-black/30 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base">
             <span>Leave </span> <span className="hidden lg:inline">Track</span>
           </LeaveTrackButton>
 
