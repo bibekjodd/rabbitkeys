@@ -1,0 +1,128 @@
+import { useGameStore } from '@/store/useGameStore';
+import { useLiveScore } from '@/store/useLiveScore';
+import { Snapshot, useReplayStore } from '@/store/useReplayStore';
+import { TimelineData, useTypingStore } from '@/store/useTypingStore';
+import { AxiosError } from 'axios';
+import { clsx, type ClassValue } from 'clsx';
+import { twMerge } from 'tailwind-merge';
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
+
+export const wait = async (duration?: number): Promise<boolean> => {
+  return new Promise((res) => {
+    setTimeout(() => {
+      res(true);
+    }, duration || 1000);
+  });
+};
+
+export const extractErrorMessage = (err: unknown): string => {
+  const message = 'Unknown error occurred';
+  if (err instanceof AxiosError) {
+    return err.response?.data?.message || err.message || message;
+  }
+  if (err instanceof Error) {
+    return err.message || message;
+  }
+  return message;
+};
+
+export const getUsername = (email: string) => {
+  return email.slice(0, email.indexOf('@'));
+};
+
+export const validateUrl = (url: string): URL | null => {
+  try {
+    return new URL(url);
+  } catch (error) {
+    return null;
+  }
+};
+
+export const formatDuration = (duration: number): string => {
+  duration /= 1000;
+  let minutes = Math.floor(duration / 60).toString();
+  if (minutes.length === 1) minutes = '0' + minutes;
+  let seconds = Math.round(duration % 60).toString();
+  if (seconds.length === 1) seconds = '0' + seconds;
+  return `${minutes}: ${seconds}`;
+};
+
+export const canStartAfterDelay = () => {
+  let { canStartTimeoutRef } = useGameStore.getState();
+  canStartTimeoutRef && clearTimeout(canStartTimeoutRef);
+  canStartTimeoutRef = setTimeout(() => {
+    useGameStore.setState({ canStart: true });
+  }, 3000);
+  useGameStore.setState({ canStartTimeoutRef, canStart: false });
+};
+
+export const updateSpeed = () => {
+  const { startedAt, isFinished } = useGameStore.getState();
+  if (!startedAt || isFinished) return;
+  const duration = (Date.now() - new Date(startedAt).getTime()) / 60_000;
+  if (!duration) return;
+
+  const { typedText, topSpeed } = useTypingStore.getState();
+  const totalWords = typedText.split(' ').length - 1;
+  const speed = totalWords / duration;
+  useTypingStore.setState({ speed });
+  if (speed > topSpeed) {
+    useTypingStore.setState({ topSpeed: speed });
+  }
+  const progress = useTypingStore.getState().progress;
+  useLiveScore.getState().updateScore({ playerId: '', progress, speed });
+};
+
+export const updateTimeline = () => {
+  const { startedAt } = useGameStore.getState();
+  if (!startedAt) return;
+  let {
+    duration,
+    errorsCount,
+    progress,
+    timeline,
+    totalErrorsCount,
+    isTypedIncorrect,
+    speed,
+    typedText,
+    paragraph
+  } = useTypingStore.getState();
+  duration ||= 0;
+  duration += 1000;
+  let accuracy = (typedText.length * 100) / (typedText.length + totalErrorsCount);
+  accuracy = Math.round(Number(accuracy)) || 100;
+
+  const timelineData: TimelineData = {
+    speed,
+    errorsCount,
+    progress,
+    duration,
+    accuracy
+  };
+  if (timeline.length === 0) {
+    timeline = [{ accuracy: 100, errorsCount: 0, progress: 0, speed: 0, duration: 0 }];
+  }
+  timeline = [...timeline, timelineData];
+  useTypingStore.setState({ duration, timeline, errorsCount: 0 });
+  const replaySnapshot: Snapshot = {
+    accuracy,
+    duration: duration,
+    index: typedText.length,
+    isTypedIncorrect,
+    speed,
+    typed: '',
+    letter: paragraph?.text[typedText.length]!
+  };
+  useReplayStore.getState().updateSnapshot(replaySnapshot);
+};
+
+export const getRankSuffix = (rank: number): 'st' | 'nd' | 'rd' | 'th' => {
+  if (rank >= 11 && rank <= 13) return 'th';
+  if (rank % 10 === 1) return 'st';
+  if (rank % 10 === 2) return 'nd';
+  if (rank % 10 === 3) return 'rd';
+  return 'th';
+};
