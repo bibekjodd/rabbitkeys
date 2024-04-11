@@ -9,10 +9,13 @@ export const useUpdateResult = () => {
 
   return useMutation({
     mutationKey: ['update-result'],
-    mutationFn: updateResult,
-    onSuccess(result) {
+    mutationFn: async () => {
       const profile = queryClient.getQueryData<User>(['profile']);
       if (!profile) return;
+      return updateResult();
+    },
+    onSuccess(result) {
+      if (!result) return;
       const results = queryClient.getQueryData<InfiniteData<Result[]>>(['results']) || {
         pages: [],
         pageParams: []

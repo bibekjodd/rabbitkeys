@@ -33,7 +33,7 @@ export default function InitialOverlay() {
 
             <div className="flex w-full items-center space-x-3">
               <div className="relative h-1 w-full rounded-full bg-neutral-700">
-                <div className="initial-overlay-line animate-initial-loading-bar absolute left-0 top-0 z-10 h-full rounded-full bg-white" />
+                <div className="absolute left-0 top-0 z-10 h-full animate-initial-loading-bar rounded-full bg-white" />
               </div>
               <span className="-translate-y-1 text-2xl">🥕</span>
             </div>

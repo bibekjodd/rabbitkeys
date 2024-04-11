@@ -38,7 +38,7 @@ export default function Page() {
           </tbody>
         </table>
 
-        {!isListExpanded && leaderboard?.length && (
+        {!isListExpanded && (leaderboard?.length || 0) > 10 && (
           <div className="m-5 flex justify-center">
             <button
               className="text-gray-200 hover:underline"

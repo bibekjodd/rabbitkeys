@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## RabbitKeys
 
-## Getting Started
+#### Realtime single/multiplayer typeracing web app
 
-First, run the development server:
+#### App live at [https://rabbitkeys.vercel.app](https://rabbitkeys.vercel.app)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+#### [Server Repository](https://github.com/bibekjodd/rabbitkeys-server)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+#### Frontend
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+- #### [NextJS](https://nextjs.org/)
+- #### [Tanstack Query](https://tanstack.com/query/latest)
+- #### [Zustand](https://github.com/pmndrs/zustand)
 
-## Learn More
+#### Backend
 
-To learn more about Next.js, take a look at the following resources:
+- #### [Express](http://expressjs.com/)
+- #### [Passport Google Auth](https://www.passportjs.org/)
+- #### [Pusher](https://pusher.com/) <em>(realtime provider)</em>
+- #### [SQLite](https://turso.tech/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+- #### Single/Multiplayer mode
+- #### Host race track
+- #### Invite players on realtime
+- #### Kick players from track
+- #### Google OAuth
+- #### Update profile / vehicles
+- #### Watch replay of your typing
 
-## Deploy on Vercel
+### Screenshots
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+![page](https://i.postimg.cc/Cxffvw3z/Screenshot-2024-04-11-182428.png)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+![page](https://i.postimg.cc/3w50VPh9/Screenshot-2024-04-11-182303.png)
