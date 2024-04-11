@@ -14,7 +14,7 @@ export default function Timer() {
 
   return (
     <div
-      className={`flex h-12 items-center space-x-3 pl-4 text-lg font-medium text-gray-300/90 ${robotoMono.className}`}
+      className={`flex h-12 items-center space-x-3 pl-4 text-lg text-gray-200 ${robotoMono.className}`}
     >
       {isStarted && !isReady && (
         <>

@@ -11,6 +11,8 @@ export const useUpdateResult = () => {
     mutationKey: ['update-result'],
     mutationFn: updateResult,
     onSuccess(result) {
+      const profile = queryClient.getQueryData<User>(['profile']);
+      if (!profile) return;
       const results = queryClient.getQueryData<InfiniteData<Result[]>>(['results']) || {
         pages: [],
         pageParams: []
