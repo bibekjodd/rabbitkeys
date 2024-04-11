@@ -77,7 +77,7 @@ export default function Paragraph() {
         {graphics}
         <section
           onClick={() => document.getElementById('paragraph-input')?.focus()}
-          className={`${robotoMono.className} relative mx-auto flex min-h-28 max-w-screen-lg flex-col whitespace-pre-wrap rounded-md bg-white/80 p-4 shadow-2xl shadow-white/30 filter backdrop-blur-3xl focus:outline-none`}
+          className={`${robotoMono.className} relative mx-auto flex min-h-28 max-w-screen-lg flex-col whitespace-pre-wrap rounded-md bg-white/80 p-4 pb-14 shadow-2xl shadow-white/30 filter backdrop-blur-3xl focus:outline-none`}
           id="paragraph"
         >
           {!isReplayStarted && (

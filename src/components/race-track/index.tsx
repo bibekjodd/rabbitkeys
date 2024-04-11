@@ -1,12 +1,14 @@
 'use client';
+import PlayerProgress from '../player-progress';
 import { ZebraStripes } from '../utils/stripes';
 import Countdown from './countdown';
 import Graphics from './graphics';
-import PlayerProgress from './player-progress';
+import Timer from './timer';
 
 export default function RaceTrack() {
   return (
     <div>
+      <Timer />
       <section className="relative" id="race-track">
         <Graphics />
         <Countdown />

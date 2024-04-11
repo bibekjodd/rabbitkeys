@@ -45,4 +45,12 @@ export const useSyncTrack = () => {
       if (!isFinished) startGame();
     }
   }, [track, isFinished, startGame, myTrackData?.isFinished, paragraph?.id]);
+
+  useEffect(() => {
+    const { isMultiplayerFinished } = useGameStore.getState();
+    if (track?.isFinished && !isMultiplayerFinished) {
+      useGameStore.setState({ isMultiplayerFinished: true });
+    }
+  }, [track?.isFinished]);
+  return null;
 };

@@ -7,11 +7,11 @@ import InitialOverlay from '@/components/utils/initial-overlay';
 
 export default function RacePage() {
   return (
-    <main className="relative mx-auto grid w-full max-w-screen-xl flex-grow place-items-center pb-20">
+    <main className="relative mx-auto grid w-full max-w-screen-xl flex-grow place-items-center pb-10">
       <div className="w-full">
         <InitialOverlay />
 
-        <section className="flex min-h-screen w-full flex-col justify-center px-4 pt-16 md:px-10 xl:px-0">
+        <section className="flex min-h-screen w-full flex-col justify-center px-4 md:px-10 xl:px-0">
           <div className="w-full">
             <RaceTrack />
             <Paragraph />

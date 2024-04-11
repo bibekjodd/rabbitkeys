@@ -1,4 +1,4 @@
-import { canStartAfterDelay, wait } from '@/lib/utils';
+import { canStartAfterDelay, clearGameTimeout, stopGameOnMaxTimeout, wait } from '@/lib/utils';
 import { create } from 'zustand';
 import { useLiveScore } from './useLiveScore';
 import { useReplayStore } from './useReplayStore';
@@ -9,30 +9,35 @@ type SwitchModeOptions =
   | { isMultiplayer: false; trackId?: undefined };
 
 type Invitation = { message: string; trackId: string };
-interface GameStore {
+
+type State = {
   trackId: string | null;
   isMultiplayer: boolean;
   carImage: string | null;
   isModeDetermined: boolean;
+  countdown: number;
   isReady: boolean;
   isStarted: boolean;
-  countdown: number;
   isFinished: boolean;
+  isMultiplayerFinished: boolean;
   startedAt: string | null;
   finishedAt: string | null;
   invitation: Invitation | null;
   canStart: boolean;
   canStartTimeoutRef: NodeJS.Timeout | null;
+  maxTimeoutRef: NodeJS.Timeout | null;
+};
 
+type Actions = {
   switchMode: (options?: SwitchModeOptions) => void;
   updateCarImage: (carImage: string) => void;
   startGame: () => Promise<void>;
   endGame: () => void;
   clearGame: () => void;
   updateInvitation: (invitation: Invitation | null) => void;
-}
+};
 
-export const useGameStore = create<GameStore>((set, get) => {
+export const useGameStore = create<State & Actions>((set, get) => {
   return {
     trackId: null,
     isMultiplayer: false,
@@ -47,6 +52,8 @@ export const useGameStore = create<GameStore>((set, get) => {
     invitation: null,
     canStart: true,
     canStartTimeoutRef: null,
+    maxTimeoutRef: null,
+    isMultiplayerFinished: false,
 
     switchMode(options) {
       get().clearGame();
@@ -70,6 +77,7 @@ export const useGameStore = create<GameStore>((set, get) => {
 
     async startGame() {
       const { isReady, isStarted, clearGame } = get();
+      useLiveScore.getState().clear();
       useReplayStore.getState().stop();
       if (isReady || isStarted) {
         set({ isFinished: false });
@@ -78,7 +86,6 @@ export const useGameStore = create<GameStore>((set, get) => {
       if (!isReady && !isStarted) {
         clearGame();
       }
-      useLiveScore.getState().clear();
       document.getElementById('close-invite-dialog')?.click();
       window.scroll({ top: 0, behavior: 'smooth' });
 
@@ -103,6 +110,7 @@ export const useGameStore = create<GameStore>((set, get) => {
         countdown: 0,
         startedAt: new Date().toISOString()
       });
+      stopGameOnMaxTimeout();
       useTypingStore.getState().onStart();
       await wait(100);
       const inputElement = document.getElementById('paragraph-input');
@@ -119,6 +127,7 @@ export const useGameStore = create<GameStore>((set, get) => {
         finishedAt: new Date().toISOString(),
         canStart: !isMultiplayer
       });
+      clearGameTimeout();
       useTypingStore.getState().onEnd();
       useReplayStore.getState().stop();
     },
@@ -130,8 +139,10 @@ export const useGameStore = create<GameStore>((set, get) => {
         isFinished: false,
         countdown: 3,
         startedAt: null,
-        finishedAt: null
+        finishedAt: null,
+        isMultiplayerFinished: false
       });
+      clearGameTimeout();
       useTypingStore.getState().onClear();
       useReplayStore.getState().stop();
     },

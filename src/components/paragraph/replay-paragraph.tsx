@@ -62,8 +62,8 @@ function PreviewCurrentTyping() {
   return (
     <>
       {isPaused && (
-        <div className="absolute bottom-4 left-4 flex space-x-2">
-          <Play className="fill-gray-800 text-gray-700" />
+        <div className="absolute bottom-4 left-4 flex items-center space-x-2">
+          <Play className="h-5 w-5 fill-gray-800 text-gray-700" />
           <span className="font-medium text-gray-700">Paused</span>
         </div>
       )}

@@ -157,6 +157,7 @@ export const useRealtimeUpdates = () => {
       endGame();
       useLiveScore.getState().clear();
       canStartAfterDelay();
+      useGameStore.setState({ isMultiplayerFinished: true });
       queryClient.setQueryData<Track>(['track'], track);
       wait(300).then(() => {
         document

@@ -47,6 +47,7 @@ export default function UpdateProfileDialog({
           <img
             className="absolute left-4 top-4 h-8 w-8 rounded-full object-cover"
             src={profile.image}
+            alt=""
           />
         )}
 
@@ -62,13 +63,13 @@ export default function UpdateProfileDialog({
               <ChevronRight className="ml-1 inline h-4 w-4 cursor-pointer" />
             </Label>
             <input type="file" hidden className="hidden" id="select-vehicle" />
-            {carImage && <img src={carImage} className="w-16" />}
+            {carImage && <img src={carImage} className="w-16" alt="" />}
           </div>
 
           <div className="grid grid-cols-4 items-center">
             {carImages.map((image) => (
               <button key={image} type="button" onClick={() => setCarImage(image)}>
-                <img src={image} className="m-3 w-16" />
+                <img src={image} className="m-3 w-16" alt="" />
               </button>
             ))}
           </div>

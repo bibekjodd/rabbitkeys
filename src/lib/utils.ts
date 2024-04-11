@@ -4,6 +4,7 @@ import { Snapshot, useReplayStore } from '@/store/useReplayStore';
 import { TimelineData, useTypingStore } from '@/store/useTypingStore';
 import { AxiosError } from 'axios';
 import { clsx, type ClassValue } from 'clsx';
+import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
@@ -125,4 +126,26 @@ export const getRankSuffix = (rank: number): 'st' | 'nd' | 'rd' | 'th' => {
   if (rank % 10 === 2) return 'nd';
   if (rank % 10 === 3) return 'rd';
   return 'th';
+};
+
+export const stopGameOnMaxTimeout = () => {
+  const { clearGame, switchMode, endGame } = useGameStore.getState();
+  const FIVE_MINUTES = 5 * 60 * 1000;
+  const maxTimeoutRef = setTimeout(() => {
+    const { isStarted } = useGameStore.getState();
+    if (!isStarted) return;
+    toast.info('Game must be completed within 5 minutes! Exitting current game', {
+      duration: 5000
+    });
+    endGame();
+    clearGame();
+    switchMode({ isMultiplayer: false });
+  }, FIVE_MINUTES);
+  useGameStore.setState({ maxTimeoutRef });
+};
+
+export const clearGameTimeout = () => {
+  const { maxTimeoutRef } = useGameStore.getState();
+  maxTimeoutRef && clearTimeout(maxTimeoutRef);
+  useGameStore.setState({ maxTimeoutRef: null });
 };
