@@ -1,9 +1,9 @@
 'use client';
-import { useCreateTrack } from '@/mutations/useCreateTrack';
-import { useProfile } from '@/queries/useProfile';
-import { useTrack } from '@/queries/useTrack';
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { useCreateTrack } from '@/mutations/use-create-track';
+import { useProfile } from '@/queries/use-profile';
+import { useTrack } from '@/queries/use-track';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import React, { ButtonHTMLAttributes } from 'react';

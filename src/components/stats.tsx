@@ -1,8 +1,8 @@
 'use client';
 import { robotoMono } from '@/lib/fonts';
 import { formatDuration } from '@/lib/utils';
-import { useGameStore } from '@/store/useGameStore';
-import { useTypingStore } from '@/store/useTypingStore';
+import { useGameStore } from '@/store/use-game-store';
+import { useTypingStore } from '@/store/use-typing-store';
 import TimelineChart from './timeline-chart';
 
 export default function Stats() {

@@ -1,8 +1,8 @@
 import { updateSpeed, updateTimeline } from '@/lib/utils';
 import { create } from 'zustand';
-import { useGameStore } from './useGameStore';
-import { useLiveScore } from './useLiveScore';
-import { useReplayStore } from './useReplayStore';
+import { useGameStore } from './use-game-store';
+import { useLiveScore } from './use-live-score';
+import { useReplayStore } from './use-replay-store';
 
 export type TimelineData = {
   duration: number;

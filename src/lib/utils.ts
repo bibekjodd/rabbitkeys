@@ -1,7 +1,7 @@
-import { useGameStore } from '@/store/useGameStore';
-import { useLiveScore } from '@/store/useLiveScore';
-import { Snapshot, useReplayStore } from '@/store/useReplayStore';
-import { TimelineData, useTypingStore } from '@/store/useTypingStore';
+import { useGameStore } from '@/store/use-game-store';
+import { useLiveScore } from '@/store/use-live-score';
+import { Snapshot, useReplayStore } from '@/store/use-replay-store';
+import { TimelineData, useTypingStore } from '@/store/use-typing-store';
 import { AxiosError } from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { toast } from 'sonner';
@@ -17,6 +17,13 @@ export const wait = async (duration?: number): Promise<boolean> => {
       res(true);
     }, duration || 1000);
   });
+};
+
+export const scrollIntoView = (elementId: string) => {
+  const element = document.getElementById(elementId);
+  if (!element) return;
+  const scrollLength = element.offsetTop;
+  window.scroll({ top: scrollLength, behavior: 'smooth' });
 };
 
 export const extractErrorMessage = (err: unknown): string => {
@@ -80,17 +87,9 @@ export const updateSpeed = () => {
 export const updateTimeline = () => {
   const { startedAt } = useGameStore.getState();
   if (!startedAt) return;
-  let {
-    duration,
-    errorsCount,
-    progress,
-    timeline,
-    totalErrorsCount,
-    isTypedIncorrect,
-    speed,
-    typedText,
-    paragraph
-  } = useTypingStore.getState();
+  let { duration, timeline } = useTypingStore.getState();
+  const { errorsCount, progress, totalErrorsCount, isTypedIncorrect, speed, typedText, paragraph } =
+    useTypingStore.getState();
   duration ||= 0;
   duration += 1000;
   let accuracy = (typedText.length * 100) / (typedText.length + totalErrorsCount);

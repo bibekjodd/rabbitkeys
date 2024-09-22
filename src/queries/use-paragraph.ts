@@ -9,7 +9,8 @@ export const useParagraph = (paragraphId: string | undefined | null) => {
     queryFn: () => fetchParagraph(paragraphId),
     refetchOnMount: false,
     refetchOnReconnect: false,
-    refetchOnWindowFocus: false
+    refetchOnWindowFocus: false,
+    retry: 2
   });
 };
 
@@ -17,7 +18,7 @@ export const fetchParagraph = async (
   paragraphId: string | null | undefined
 ): Promise<Paragraph> => {
   try {
-    let url: string = `${backend_url}/api/paragraph`;
+    let url: string = `${backend_url}/api/paragraphs`;
     if (paragraphId) url += `/${paragraphId}`;
     const { data } = await axios.get(url, {
       withCredentials: true

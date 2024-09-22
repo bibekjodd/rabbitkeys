@@ -1,8 +1,8 @@
 import { robotoMono } from '@/lib/fonts';
 import { formatDuration } from '@/lib/utils';
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
-import { useTypingStore } from '@/store/useTypingStore';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
+import { useTypingStore } from '@/store/use-typing-store';
 import { TimerIcon } from 'lucide-react';
 
 export default function Timer() {

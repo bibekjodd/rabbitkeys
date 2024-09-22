@@ -1,6 +1,6 @@
 'use client';
-import { useJoinTrack } from '@/mutations/useJoinTrack';
-import { useGameStore } from '@/store/useGameStore';
+import { useJoinTrack } from '@/mutations/use-join-track';
+import { useGameStore } from '@/store/use-game-store';
 import { Check, X } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';

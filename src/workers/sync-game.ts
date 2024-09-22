@@ -1,7 +1,7 @@
 'use client';
 import { selectRandomCarImage } from '@/lib/constants';
-import { useProfile } from '@/queries/useProfile';
-import { useGameStore } from '@/store/useGameStore';
+import { useProfile } from '@/queries/use-profile';
+import { useGameStore } from '@/store/use-game-store';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';

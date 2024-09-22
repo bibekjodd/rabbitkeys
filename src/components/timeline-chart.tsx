@@ -1,8 +1,8 @@
 'use client';
 import { chartColors } from '@/lib/constants';
 import { robotoMono } from '@/lib/fonts';
-import { useGameStore } from '@/store/useGameStore';
-import { useTypingStore } from '@/store/useTypingStore';
+import { useGameStore } from '@/store/use-game-store';
+import { useTypingStore } from '@/store/use-typing-store';
 import { AreaChart, MoveRight } from 'lucide-react';
 import { useMemo } from 'react';
 import { AxisOptions, Chart, UserSerie } from 'react-charts';

@@ -19,7 +19,7 @@ export const useInvitePlayer = ({ player, trackId }: Options) => {
 type Options = { player: string; trackId: string };
 const invitePlayer = async ({ trackId, player }: Options) => {
   try {
-    return axios.get(`${backend_url}/api/invite/${trackId}/${player}`, {
+    return axios.get(`${backend_url}/api/players/${player}/invite/${trackId}`, {
       withCredentials: true
     });
   } catch (err) {

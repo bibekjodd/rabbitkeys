@@ -1,11 +1,11 @@
 import { backend_url } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
-import { useGameStore } from '@/store/useGameStore';
+import { useGameStore } from '@/store/use-game-store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { fetchParagraph } from '../queries/useParagraph';
+import { fetchParagraph } from '../queries/use-paragraph';
 
 export const useCreateTrack = () => {
   const queryClient = useQueryClient();
@@ -39,7 +39,7 @@ export const useCreateTrack = () => {
 
 const createTrack = async (): Promise<Track> => {
   try {
-    const { data } = await axios.post(`${backend_url}/api/track`, {}, { withCredentials: true });
+    const { data } = await axios.post(`${backend_url}/api/tracks`, {}, { withCredentials: true });
     return data.track;
   } catch (error) {
     throw new Error(extractErrorMessage(error));

@@ -1,4 +1,4 @@
-import { useReplayStore } from '@/store/useReplayStore';
+import { useReplayStore } from '@/store/use-replay-store';
 import React, { ButtonHTMLAttributes } from 'react';
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement>;

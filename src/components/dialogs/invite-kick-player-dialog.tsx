@@ -1,11 +1,11 @@
-import { useDebounce } from '@/hooks/useDebounce';
-import { useInvitePlayer } from '@/mutations/useInvitePlayer';
-import { useKickPlayer } from '@/mutations/useKickPlayer';
-import { useActivePlayers } from '@/queries/useActivePlayers';
-import { useProfile } from '@/queries/useProfile';
-import { useTrack } from '@/queries/useTrack';
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { useDebounce } from '@/hooks/use-debounce';
+import { useInvitePlayer } from '@/mutations/use-invite-player';
+import { useKickPlayer } from '@/mutations/use-kick-player';
+import { useActivePlayers } from '@/queries/use-active-players';
+import { useProfile } from '@/queries/use-profile';
+import { useTrack } from '@/queries/use-track';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating } from '@tanstack/react-query';
 import { ClipboardList, Loader2 } from 'lucide-react';
 import { usePathname } from 'next/navigation';
@@ -209,9 +209,7 @@ function Player({
         <button
           onClick={handleOnKick}
           disabled={isCreator ? isKickingPlayer : isJoined}
-          className={`relative h-8 rounded-md px-3 text-sm disabled:opacity-50
-          ${isCreator ? 'bg-rose-600' : 'bg-sky-600 '}
-          `}
+          className={`relative h-8 rounded-md px-3 text-sm disabled:opacity-50 ${isCreator ? 'bg-rose-600' : 'bg-sky-600'} `}
         >
           <span className={`${isKickingPlayer ? 'opacity-0' : ''}`}>
             {isCreator ? 'Kick' : 'Joined'}

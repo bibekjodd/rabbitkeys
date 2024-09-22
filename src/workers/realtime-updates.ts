@@ -7,12 +7,12 @@ import {
   events
 } from '@/lib/events';
 import { pusher } from '@/lib/pusher';
-import { canStartAfterDelay, wait } from '@/lib/utils';
-import { fetchParagraph } from '@/queries/useParagraph';
-import { useProfile } from '@/queries/useProfile';
-import { useTrack } from '@/queries/useTrack';
-import { useGameStore } from '@/store/useGameStore';
-import { useLiveScore } from '@/store/useLiveScore';
+import { canStartAfterDelay, scrollIntoView, wait } from '@/lib/utils';
+import { fetchParagraph } from '@/queries/use-paragraph';
+import { useProfile } from '@/queries/use-profile';
+import { useTrack } from '@/queries/use-track';
+import { useGameStore } from '@/store/use-game-store';
+import { useLiveScore } from '@/store/use-live-score';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -160,9 +160,7 @@ export const useRealtimeUpdates = () => {
       useGameStore.setState({ isMultiplayerFinished: true });
       queryClient.setQueryData<Track>(['track'], track);
       wait(300).then(() => {
-        document
-          .getElementById('player-ranks')
-          ?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        scrollIntoView('player-ranks');
       });
     });
   }, [clearGame, endGame, myEmail, queryClient, router, startGame, switchMode, trackId, channel]);

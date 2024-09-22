@@ -1,6 +1,6 @@
 import { backend_url } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
-import { useGameStore } from '@/store/useGameStore';
+import { useGameStore } from '@/store/use-game-store';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -26,7 +26,7 @@ export const fetchTrackData = async (trackId: string | null | undefined): Promis
     throw new Error('Could not join track with invalid id');
   }
   try {
-    const { data } = await axios.get(`${backend_url}/api/track/${trackId}`, {
+    const { data } = await axios.get(`${backend_url}/api/tracks/${trackId}`, {
       withCredentials: true
     });
     return data.track;

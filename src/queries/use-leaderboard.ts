@@ -3,22 +3,20 @@ import { extractErrorMessage } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-export const useProfile = () => {
+export const useLeaderboard = () => {
   return useQuery({
-    queryKey: ['profile'],
-    queryFn: fetchProfile,
-    refetchOnWindowFocus: true,
-    refetchOnMount: false,
-    refetchOnReconnect: true
+    queryKey: ['leaderboard'],
+    queryFn: fetchLeaderboard,
+    refetchOnMount: true
   });
 };
 
-export const fetchProfile = async (): Promise<User> => {
+const fetchLeaderboard = async (): Promise<Leaderboard> => {
   try {
-    const { data } = await axios.get(`${backend_url}/api/profile`, {
+    const { data } = await axios.get(`${backend_url}/api/stats/leaderboard`, {
       withCredentials: true
     });
-    return data.user;
+    return data.leaderboard;
   } catch (error) {
     throw new Error(extractErrorMessage(error));
   }

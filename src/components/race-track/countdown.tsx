@@ -1,5 +1,6 @@
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { lightspreadImage } from '@/lib/constants';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
 
 export default function Countdown() {
   return (
@@ -32,7 +33,7 @@ function BaseCountdown({ countdown }: { countdown: number }) {
           {countdown === 0 && <span className="text-7xl">START</span>}
           <div className="absolute grid place-items-center">
             <img
-              src="https://i.postimg.cc/d1LkLgVR/lightspread.png"
+              src={lightspreadImage}
               alt="light"
               className="h-96 animate-spin opacity-90 [animation-duration:50000ms]"
             />

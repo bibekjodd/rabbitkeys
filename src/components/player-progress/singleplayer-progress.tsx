@@ -1,6 +1,6 @@
-import { useProfile } from '@/queries/useProfile';
-import { useGameStore } from '@/store/useGameStore';
-import { useTypingStore } from '@/store/useTypingStore';
+import { useProfile } from '@/queries/use-profile';
+import { useGameStore } from '@/store/use-game-store';
+import { useTypingStore } from '@/store/use-typing-store';
 import { BasePlayerProgress } from '.';
 
 export default function SingleplayerProgress() {

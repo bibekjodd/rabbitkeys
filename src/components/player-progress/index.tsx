@@ -1,8 +1,8 @@
 'use client';
 import { roadStripes } from '@/components/utils/stripes';
-import { useGameStore } from '@/store/useGameStore';
-import { useLiveScore } from '@/store/useLiveScore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { useGameStore } from '@/store/use-game-store';
+import { useLiveScore } from '@/store/use-live-score';
+import { useReplayStore } from '@/store/use-replay-store';
 import { memo, useEffect, useState } from 'react';
 import MultiplayerProgress from './multiplayer-progress';
 import ReplayProgress from './replay-progress';
@@ -73,10 +73,7 @@ export const BasePlayerProgress = memo(function Component({ player }: BasePlayer
       <img
         src={player?.carImage || ''}
         alt="player vehicle"
-        className={`absolute left-10 top-1/2 z-30 h-16 -translate-y-1/2 transition-all
-        ${isReady ? 'duration-0' : 'duration-1000'}
-        ${canStart && player.isFinished ? '' : ''}
-        `}
+        className={`absolute left-10 top-1/2 z-30 h-16 -translate-y-1/2 transition-all ${isReady ? 'duration-0' : 'duration-1000'} ${canStart && player.isFinished ? '' : ''} `}
         style={{
           left: left + '%'
         }}

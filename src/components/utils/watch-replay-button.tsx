@@ -1,5 +1,5 @@
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
 import { usePathname } from 'next/navigation';
 import { ButtonHTMLAttributes } from 'react';
 

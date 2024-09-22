@@ -1,6 +1,6 @@
 import { flagImage } from '@/lib/constants';
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
 
 export default function Graphics() {
   return (
@@ -58,25 +58,21 @@ function BaseFlag({
       <img
         src={flagImage}
         alt="flag"
-        className={`absolute top-0 z-20 -translate-y-16 transition-all duration-1000
-          ${
-            countdown <= 0 || isStarted
-              ? 'left-full top-5 h-24 w-24 -translate-x-40 rotate-[20deg] -scale-x-100'
-              : 'left-1/2 h-64 w-64 -translate-x-[calc(50%-64px)]'
-          }
-        `}
+        className={`absolute top-0 z-20 -translate-y-16 transition-all duration-1000 ${
+          countdown <= 0 || isStarted
+            ? 'left-full top-5 h-24 w-24 -translate-x-40 rotate-[20deg] -scale-x-100'
+            : 'left-1/2 h-64 w-64 -translate-x-[calc(50%-64px)]'
+        } `}
       />
 
       <img
         src={flagImage}
         alt="flag"
-        className={`absolute top-0 z-20 transition-all duration-1000
-        ${
+        className={`absolute top-0 z-20 transition-all duration-1000 ${
           countdown <= 0 || isStarted
             ? 'left-full top-1/2 h-24 w-24 -translate-x-40 translate-y-2 rotate-[20deg] -scale-x-100'
             : 'left-1/2 h-64 w-64 -translate-x-[calc(50%+64px)] -translate-y-16 -scale-x-100'
-        }
-        `}
+        } `}
       />
     </>
   );

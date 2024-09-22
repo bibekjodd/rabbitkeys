@@ -1,6 +1,6 @@
 import { backend_url } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
-import { useTypingStore } from '@/store/useTypingStore';
+import { useTypingStore } from '@/store/use-typing-store';
 import { InfiniteData, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
@@ -37,7 +37,7 @@ const updateResult = async (): Promise<Result> => {
   try {
     const { speed, accuracy, topSpeed } = useTypingStore.getState();
     const { data } = await axios.post(
-      `${backend_url}/api/result`,
+      `${backend_url}/api/results`,
       { speed, accuracy, topSpeed },
       { withCredentials: true }
     );

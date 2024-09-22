@@ -1,4 +1,4 @@
-import { useReplayStore } from '@/store/useReplayStore';
+import { useReplayStore } from '@/store/use-replay-store';
 import { useCallback, useEffect } from 'react';
 
 export const useReplayController = () => {

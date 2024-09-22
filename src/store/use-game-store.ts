@@ -1,8 +1,14 @@
-import { canStartAfterDelay, clearGameTimeout, stopGameOnMaxTimeout, wait } from '@/lib/utils';
+import {
+  canStartAfterDelay,
+  clearGameTimeout,
+  scrollIntoView,
+  stopGameOnMaxTimeout,
+  wait
+} from '@/lib/utils';
 import { create } from 'zustand';
-import { useLiveScore } from './useLiveScore';
-import { useReplayStore } from './useReplayStore';
-import { useTypingStore } from './useTypingStore';
+import { useLiveScore } from './use-live-score';
+import { useReplayStore } from './use-replay-store';
+import { useTypingStore } from './use-typing-store';
 
 type SwitchModeOptions =
   | { isMultiplayer: true; trackId: string }
@@ -87,7 +93,7 @@ export const useGameStore = create<State & Actions>((set, get) => {
         clearGame();
       }
       document.getElementById('close-invite-dialog')?.click();
-      window.scroll({ top: 0, behavior: 'smooth' });
+      scrollIntoView('body');
 
       set({
         isReady: true,
@@ -115,7 +121,7 @@ export const useGameStore = create<State & Actions>((set, get) => {
       await wait(100);
       const inputElement = document.getElementById('paragraph-input');
       inputElement?.focus();
-      window.scroll({ top: 0, behavior: 'smooth' });
+      scrollIntoView('body');
     },
 
     endGame() {

@@ -1,8 +1,8 @@
 import { robotoMono } from '@/lib/fonts';
 import { formatDuration, getRankSuffix } from '@/lib/utils';
-import { useProfile } from '@/queries/useProfile';
-import { useTrack } from '@/queries/useTrack';
-import { useGameStore } from '@/store/useGameStore';
+import { useProfile } from '@/queries/use-profile';
+import { useTrack } from '@/queries/use-track';
+import { useGameStore } from '@/store/use-game-store';
 import { useEffect, useState } from 'react';
 
 export default function PlayerRanks() {

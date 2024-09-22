@@ -20,7 +20,7 @@ export const useUser = (id: string) => {
 
 const fetchUser = async (id: string): Promise<User | null> => {
   try {
-    const { data } = await axios.get(`${backend_url}/api/user/${id}`, {
+    const { data } = await axios.get(`${backend_url}/api/users/${id}`, {
       withCredentials: true
     });
     return data.player || null;

@@ -1,6 +1,6 @@
-import { fetchParagraph } from '@/queries/useParagraph';
-import { fetchTrackData } from '@/queries/useTrack';
-import { useGameStore } from '@/store/useGameStore';
+import { fetchParagraph } from '@/queries/use-paragraph';
+import { fetchTrackData } from '@/queries/use-track';
+import { useGameStore } from '@/store/use-game-store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 

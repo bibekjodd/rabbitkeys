@@ -1,6 +1,6 @@
 import { carImages } from '@/lib/constants';
 import { inter } from '@/lib/fonts';
-import { useUpdateProfile } from '@/mutations/useUpdateProfile';
+import { useUpdateProfile } from '@/mutations/use-update-profile';
 import { DialogClose } from '@radix-ui/react-dialog';
 import { ChevronRight } from 'lucide-react';
 import React, { useRef, useState } from 'react';

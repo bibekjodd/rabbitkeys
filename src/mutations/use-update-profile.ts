@@ -41,7 +41,7 @@ export const useUpdateProfile = () => {
 type UpdateOptions = Partial<{ name: string; image: string; carImage: string }>;
 const updateProfile = async (data: UpdateOptions): Promise<User> => {
   try {
-    const res = await axios.put<{ user: User }>(`${backend_url}/api/profile`, data, {
+    const res = await axios.put<{ user: User }>(`${backend_url}/api/users/profile`, data, {
       withCredentials: true
     });
     return res.data.user;

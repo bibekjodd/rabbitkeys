@@ -1,8 +1,8 @@
 'use client';
 import { backend_url } from '@/lib/constants';
 import { robotoMono, rubikGlitch } from '@/lib/fonts';
-import { useProfile } from '@/queries/useProfile';
-import { useGameStore } from '@/store/useGameStore';
+import { useProfile } from '@/queries/use-profile';
+import { useGameStore } from '@/store/use-game-store';
 import { User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
@@ -23,13 +23,11 @@ export default function Header() {
   const isStarted = useGameStore((state) => state.isStarted);
 
   return (
-    <div className="flex h-20 items-center px-3.5 text-sm sm:px-5 md:h-24 md:px-5 lg:text-base">
+    <div className="flex h-20 items-center px-3.5 text-sm sm:px-5 md:px-5 lg:text-base">
       <header className="mx-auto flex w-full max-w-screen-xl items-center justify-between">
         <h1>
           <span
-            className={`${rubikGlitch.className} bg-gradient-to-r 
-            from-rose-600 via-pink-500 to-sky-500 
-            bg-clip-text text-3xl text-transparent lg:text-4xl`}
+            className={`${rubikGlitch.className} bg-gradient-to-r from-rose-600 via-pink-500 to-sky-500 bg-clip-text text-3xl text-transparent lg:text-4xl`}
           >
             {pathname === '/' && 'Rabbit_keys'}
             {pathname !== '/' && <Link href="/">Rabbit_keys</Link>}
@@ -46,7 +44,8 @@ export default function Header() {
               <span>Join</span> <span className="hidden lg:inline">Track</span>
             </button>
           </JoinTrackDialog>
-          <CreateTrackButton className="flex h-10 items-center rounded-md border-2 border-transparent bg-black/30 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base">
+
+          <CreateTrackButton className="flex h-10 items-center space-x-2 rounded-md border-2 border-transparent bg-black/30 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base">
             <span>Host</span> <span className="hidden lg:inline">Race</span>
           </CreateTrackButton>
 
@@ -85,7 +84,12 @@ export default function Header() {
 
           {!profile && !isLoadingProfile && !isReady && !isStarted && (
             <button
-              onClick={() => window.open(`${backend_url}/api/login/google`, '_blank')}
+              onClick={() =>
+                window.open(
+                  `${backend_url}/api/auth/login/google?redirect=${location.origin}`,
+                  '_blank'
+                )
+              }
               className="flex h-10 items-center space-x-2 rounded-md border-2 border-transparent bg-black/50 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base"
             >
               <span>Login</span>

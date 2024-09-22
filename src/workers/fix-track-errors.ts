@@ -1,9 +1,9 @@
-import { useGameStore } from '@/store/useGameStore';
+import { useGameStore } from '@/store/use-game-store';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { useTrack } from '../queries/useTrack';
+import { useTrack } from '../queries/use-track';
 
 export const useFixTrackErrors = () => {
   const isMultiplayer = useGameStore((state) => state.isMultiplayer);

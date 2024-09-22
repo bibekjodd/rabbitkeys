@@ -16,11 +16,7 @@ export default function BaseParagraph({
       {(paragraph?.text || '').split('').map((letter, i) => (
         <span
           key={i}
-          className={`
-            ${letter === ' ' ? 'px-1' : 'px-[0.9px]'}
-            ${isStarted && isFocused && letterIndex === i && isTypedIncorrect ? 'bg-rose-600 text-white' : ''}
-            ${isStarted && isFocused && letterIndex === i && !isTypedIncorrect ? 'bg-sky-600 text-white' : ''}
-          `}
+          className={` ${letter === ' ' ? 'px-1' : 'px-[0.9px]'} ${isStarted && isFocused && letterIndex === i && isTypedIncorrect ? 'bg-rose-600 text-white' : ''} ${isStarted && isFocused && letterIndex === i && !isTypedIncorrect ? 'bg-sky-600 text-white' : ''} `}
         >
           {letter}
         </span>

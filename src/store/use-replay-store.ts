@@ -1,6 +1,6 @@
-import { wait } from '@/lib/utils';
+import { scrollIntoView, wait } from '@/lib/utils';
 import { create } from 'zustand';
-import { useGameStore } from './useGameStore';
+import { useGameStore } from './use-game-store';
 
 export type Snapshot = {
   letter: string;
@@ -67,7 +67,7 @@ export const useReplayStore = create<ReplayStore>((set, get) => ({
       stop();
     }
     if (isStarted || isReady) return;
-    window.scroll({ top: 0, behavior: 'smooth' });
+    scrollIntoView('body');
     set({ isStarted: true, isPaused: false, countdown: 3, isReady: true, currentIndex: 0 });
     await wait(1000);
     set({ countdown: 2 });
@@ -77,7 +77,7 @@ export const useReplayStore = create<ReplayStore>((set, get) => ({
     set({ countdown: 0 });
     await wait(500);
     set({ isReady: false, isStarted: true, isPaused: false, currentIndex: 0 });
-    window.scroll({ top: 0, behavior: 'smooth' });
+    scrollIntoView('body');
     get().onPlay();
   },
 

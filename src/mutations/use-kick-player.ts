@@ -30,7 +30,9 @@ export const useKickPlayer = ({ trackId, playerId }: Options) => {
 type Options = { trackId: string; playerId: string };
 const kickPlayer = async ({ trackId, playerId }: Options) => {
   try {
-    return axios.get(`${backend_url}/api/kick/${trackId}/${playerId}`, { withCredentials: true });
+    return axios.get(`${backend_url}/api/players/${playerId}/kick/${trackId}`, {
+      withCredentials: true
+    });
   } catch (error) {
     throw new Error(extractErrorMessage(error));
   }

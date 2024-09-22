@@ -1,7 +1,7 @@
 import { backend_url } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
-import { useGameStore } from '@/store/useGameStore';
-import { useTypingStore } from '@/store/useTypingStore';
+import { useGameStore } from '@/store/use-game-store';
+import { useTypingStore } from '@/store/use-typing-store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -35,7 +35,7 @@ export const useLeaveTrack = () => {
 
 const leaveTrack = async (trackId: string) => {
   try {
-    await axios.get(`${backend_url}/api/leave-track/${trackId}`, {
+    await axios.get(`${backend_url}/api/tracks/${trackId}/leave`, {
       withCredentials: true
     });
   } catch (error) {

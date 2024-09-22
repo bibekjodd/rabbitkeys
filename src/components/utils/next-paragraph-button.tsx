@@ -1,8 +1,8 @@
 'use client';
-import { useNextParagraph } from '@/mutations/useNextParagraph';
-import { useParagraph } from '@/queries/useParagraph';
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { useNextParagraph } from '@/mutations/use-next-paragraph';
+import { useParagraph } from '@/queries/use-paragraph';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating, useQueryClient } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import React, { ButtonHTMLAttributes, useCallback } from 'react';

@@ -1,7 +1,10 @@
 {
-  "extends": "next/core-web-vitals",
+  "extends": ["next"],
+  "plugins": ["unicorn"],
   "rules": {
     "no-unused-vars": "warn",
-    "@next/next/no-img-element": "off"
+    "@next/next/no-img-element": "off",
+    "prefer-const": "warn",
+    "unicorn/filename-case": ["error", { "case": "kebabCase" }]
   }
 }

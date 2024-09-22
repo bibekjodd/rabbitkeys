@@ -1,11 +1,11 @@
-import { useInterval } from '@/hooks/useInterval';
-import { usePrevious } from '@/hooks/usePrevious';
-import { useTimeout } from '@/hooks/useTimeout';
-import { useUpdateScore } from '@/mutations/useUpdateScore';
-import { useParagraph } from '@/queries/useParagraph';
-import { useProfile } from '@/queries/useProfile';
-import { useTrack } from '@/queries/useTrack';
-import { useGameStore } from '@/store/useGameStore';
+import { useInterval } from '@/hooks/use-interval';
+import { usePrevious } from '@/hooks/use-previous';
+import { useTimeout } from '@/hooks/use-timeout';
+import { useUpdateScore } from '@/mutations/use-update-score';
+import { useParagraph } from '@/queries/use-paragraph';
+import { useProfile } from '@/queries/use-profile';
+import { useTrack } from '@/queries/use-track';
+import { useGameStore } from '@/store/use-game-store';
 import { useQueryClient } from '@tanstack/react-query';
 import { useCallback, useEffect } from 'react';
 

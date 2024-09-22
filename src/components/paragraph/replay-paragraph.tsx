@@ -1,7 +1,7 @@
-import { useReplayController } from '@/hooks/useReplayController';
-import { useTimeout } from '@/hooks/useTimeout';
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { useReplayController } from '@/hooks/use-replay-controller';
+import { useTimeout } from '@/hooks/use-timeout';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
 import { MoveLeft, MoveRight, Play, Space } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import BaseParagraph from './base-paragraph';
@@ -71,13 +71,13 @@ function PreviewCurrentTyping() {
       <div className="absolute bottom-4 right-4 flex items-center space-x-3 text-sm font-medium text-gray-800">
         <span>Press</span>
         <span className="rounded-md bg-gray-700 px-1 py-0.5 text-white">
-          <MoveLeft className="h-4 w-4 " />
+          <MoveLeft className="h-4 w-4" />
         </span>
         <span className="rounded-md bg-gray-700 px-1 py-0.5 text-white">
-          <Space className="h-4 w-4 " />
+          <Space className="h-4 w-4" />
         </span>
         <span className="rounded-md bg-gray-700 px-1 py-0.5 text-white">
-          <MoveRight className="h-4 w-4 " />
+          <MoveRight className="h-4 w-4" />
         </span>
         <span>to skip/pause replay</span>
       </div>
@@ -89,9 +89,7 @@ function PreviewCurrentTyping() {
               return (
                 <div
                   key={i}
-                  className={`block flex-shrink-0 rounded-lg border border-gray-600 bg-black/30 p-2 text-4xl lg:p-4 lg:text-6xl
-                  ${snapshot.isTypedIncorrect ? 'text-rose-600' : 'text-white'}
-                  `}
+                  className={`block flex-shrink-0 rounded-lg border border-gray-600 bg-black/30 p-2 text-4xl lg:p-4 lg:text-6xl ${snapshot.isTypedIncorrect ? 'text-rose-600' : 'text-white'} `}
                 >
                   {snapshot.typed === ' ' ? ' ' : snapshot.typed}
                 </div>

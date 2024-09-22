@@ -16,7 +16,7 @@ export const useNextParagraph = () => {
 
 const fetchNextParagraph = async (skipParagraphId: string): Promise<Paragraph> => {
   try {
-    const { data } = await axios.get(`${backend_url}/api/paragraph?skip=${skipParagraphId}`);
+    const { data } = await axios.get(`${backend_url}/api/paragraphs?skip=${skipParagraphId}`);
     return data.paragraph;
   } catch (err) {
     throw new Error(extractErrorMessage(err));

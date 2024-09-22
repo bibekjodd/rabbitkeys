@@ -7,12 +7,7 @@ export function ZebraStripes({ left }: { left?: boolean }) {
     >
       <div className="relative grid w-12 grid-cols-3 sm:w-16">
         {new Array(100).fill('nothing').map((_, i) => (
-          <div
-            key={i}
-            className={`aspect-square 
-            ${i % 2 ? 'bg-white' : `bg-black`}
-          `}
-          />
+          <div key={i} className={`aspect-square ${i % 2 ? 'bg-white' : `bg-black`} `} />
         ))}
       </div>
     </div>

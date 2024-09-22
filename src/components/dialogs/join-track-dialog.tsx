@@ -8,10 +8,10 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { validateUrl } from '@/lib/utils';
-import { useJoinTrack } from '@/mutations/useJoinTrack';
-import { useProfile } from '@/queries/useProfile';
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { useJoinTrack } from '@/mutations/use-join-track';
+import { useProfile } from '@/queries/use-profile';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
@@ -128,8 +128,7 @@ export function JoinTrackDialog({ children }: Props) {
             </button>
           </div>
           <p
-            className={`text-sm font-medium text-rose-500
-          ${!trackId && input ? '' : 'opacity-0'}`}
+            className={`text-sm font-medium text-rose-500 ${!trackId && input ? '' : 'opacity-0'}`}
           >
             {!trackId && input ? 'Invalid url' : ''}
           </p>

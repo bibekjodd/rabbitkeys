@@ -1,15 +1,15 @@
 'use client';
 import { robotoMono } from '@/lib/fonts';
-import { wait } from '@/lib/utils';
-import { useUpdateResult } from '@/mutations/useUpdateResult';
-import { useParagraph } from '@/queries/useParagraph';
-import { useTrack } from '@/queries/useTrack';
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
-import { useTypingStore } from '@/store/useTypingStore';
+import { scrollIntoView, wait } from '@/lib/utils';
+import { useUpdateResult } from '@/mutations/use-update-result';
+import { useParagraph } from '@/queries/use-paragraph';
+import { useTrack } from '@/queries/use-track';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
+import { useTypingStore } from '@/store/use-typing-store';
 import { useIsMutating, useQueryClient } from '@tanstack/react-query';
-import { ChevronsRight, Loader2, MonitorPlay } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
+import { ChevronsRight, Loader2, MonitorPlay, MousePointer } from 'lucide-react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Input } from '../ui/input';
 import NextParagraphButton from '../utils/next-paragraph-button';
 import WatchReplayButton from '../utils/watch-replay-button';
@@ -39,7 +39,7 @@ export default function Paragraph() {
   const { mutate: updateResult } = useUpdateResult();
 
   const handleParagraphInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!isStarted) {
+    if (!isStarted || !isFocused) {
       previousInputRef.current = '';
       return;
     }
@@ -55,7 +55,7 @@ export default function Paragraph() {
     const { isMultiplayer } = useGameStore.getState();
     if (isMultiplayer) return;
     wait(100).then(() => {
-      document.getElementById('stats')?.scrollIntoView({ block: 'start', behavior: 'smooth' });
+      scrollIntoView('typing-stats');
     });
     updateResult();
     queryClient.setQueryData(['paragraph', null], null);
@@ -71,8 +71,24 @@ export default function Paragraph() {
     if (paragraph) loadParagraph(paragraph);
   }, [paragraph, loadParagraph]);
 
+  const focusInput = useCallback(
+    (e: KeyboardEvent) => {
+      if (isFocused || !isStarted) return;
+      e.preventDefault();
+      document.getElementById('paragraph-input')?.focus();
+    },
+    [isFocused, isStarted]
+  );
+
+  useEffect(() => {
+    document.body.addEventListener('keydown', focusInput);
+    return () => {
+      document.body.removeEventListener('keydown', focusInput);
+    };
+  }, [focusInput]);
+
   return (
-    <div className="pb-44">
+    <div className="pb-36">
       <div className="relative p-4 pb-8">
         {graphics}
         <section
@@ -91,11 +107,27 @@ export default function Paragraph() {
           )}
           {isReplayStarted && <ReplayParagraph />}
 
+          {!isFocused && isStarted && (
+            <label
+              htmlFor="paragraph-input"
+              className="absolute inset-0 z-50 grid place-items-center bg-black/10 text-gray-900 filter backdrop-blur-sm"
+            >
+              <div className="flex items-center space-x-2">
+                <MousePointer className="size-4 fill-gray-800" />
+                <p className="font-medium">Click here or press any key to focus</p>
+              </div>
+            </label>
+          )}
+
           {isStarted && (
             <Input
+              disabled={!isStarted}
               value={previousInputRef.current}
               onChange={handleParagraphInput}
               autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              autoFocus
               id="paragraph-input"
               className="absolute inset-0 bg-transparent opacity-0"
               onFocus={() => setIsFocused(true)}

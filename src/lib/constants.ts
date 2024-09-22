@@ -1,5 +1,6 @@
 export const backend_url = process.env.NEXT_PUBLIC_BACKEND_URL;
 export const flagImage = 'https://i.postimg.cc/nrdJWpr3/flag.png';
+export const lightspreadImage = 'https://i.postimg.cc/d1LkLgVR/lightspread.png';
 
 export const dummyUserImage = 'https://i.postimg.cc/HLky2cQ6/110604197.jpg';
 

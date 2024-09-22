@@ -1,6 +1,6 @@
-import { useProfile } from '@/queries/useProfile';
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { useProfile } from '@/queries/use-profile';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
 import { BasePlayerProgress } from '.';
 
 export default function ReplayProgress() {

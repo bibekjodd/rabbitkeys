@@ -1,8 +1,8 @@
 'use client';
-import { dummyUserImage, flagImage } from '@/lib/constants';
+import { dummyUserImage, flagImage, lightspreadImage } from '@/lib/constants';
 import { useEffect } from 'react';
 
-const images = [flagImage, dummyUserImage];
+const images = [flagImage, dummyUserImage, lightspreadImage];
 
 const preloadImage = (src: string) => {
   const image = new Image();

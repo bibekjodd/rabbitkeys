@@ -1,11 +1,11 @@
 import { backend_url } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
-import { useGameStore } from '@/store/useGameStore';
-import { useTypingStore } from '@/store/useTypingStore';
+import { useGameStore } from '@/store/use-game-store';
+import { useTypingStore } from '@/store/use-typing-store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
-import { fetchTrackData } from '../queries/useTrack';
+import { fetchTrackData } from '../queries/use-track';
 
 export const useUpdateScore = () => {
   const [previousProgress, setPreviousProgress] = useState<number | null>(null);
@@ -50,7 +50,7 @@ type Options = {
 };
 const updateScore = async (data: Options) => {
   try {
-    const response = await axios.put(`${backend_url}/api/race/${data.trackId}`, data, {
+    const response = await axios.put(`${backend_url}/api/races/${data.trackId}`, data, {
       withCredentials: true
     });
     return response.data.track;

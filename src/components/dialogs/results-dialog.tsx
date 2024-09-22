@@ -1,6 +1,6 @@
 'use client';
 import { robotoMono } from '@/lib/fonts';
-import { useResults } from '@/queries/useResults';
+import { useResults } from '@/queries/use-results';
 import React from 'react';
 import { Button } from '../ui/button';
 import {

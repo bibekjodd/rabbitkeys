@@ -1,10 +1,10 @@
-import { useNextParagraph } from '@/mutations/useNextParagraph';
-import { useStartRace } from '@/mutations/useStartRace';
-import { useParagraph } from '@/queries/useParagraph';
-import { useProfile } from '@/queries/useProfile';
-import { useTrack } from '@/queries/useTrack';
-import { useGameStore } from '@/store/useGameStore';
-import { useReplayStore } from '@/store/useReplayStore';
+import { useNextParagraph } from '@/mutations/use-next-paragraph';
+import { useStartRace } from '@/mutations/use-start-race';
+import { useParagraph } from '@/queries/use-paragraph';
+import { useProfile } from '@/queries/use-profile';
+import { useTrack } from '@/queries/use-track';
+import { useGameStore } from '@/store/use-game-store';
+import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
 import React, { ButtonHTMLAttributes, useCallback } from 'react';

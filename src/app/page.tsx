@@ -1,4 +1,5 @@
 'use client';
+import KeyboardShortcutDialog from '@/components/dialogs/keyboard-shortcut-dialog';
 import Paragraph from '@/components/paragraph';
 import PlayerRanks from '@/components/player-ranks';
 import RaceTrack from '@/components/race-track';
@@ -12,8 +13,9 @@ export default function RacePage() {
       <div className="w-full">
         <PreloadImages />
         <InitialOverlay />
+        <KeyboardShortcutDialog />
 
-        <section className="flex min-h-screen w-full flex-col justify-center px-4 md:px-10 xl:px-0">
+        <section className="flex min-h-[calc(100vh-80px)] w-full flex-col justify-center px-4 md:px-10 xl:px-0">
           <div className="w-full">
             <RaceTrack />
             <Paragraph />

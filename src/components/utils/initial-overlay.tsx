@@ -1,7 +1,7 @@
 import { rubikGlitch } from '@/lib/fonts';
-import { useParagraph } from '@/queries/useParagraph';
-import { useProfile } from '@/queries/useProfile';
-import { useTrack } from '@/queries/useTrack';
+import { useParagraph } from '@/queries/use-paragraph';
+import { useProfile } from '@/queries/use-profile';
+import { useTrack } from '@/queries/use-track';
 import { useEffect, useState } from 'react';
 
 export default function InitialOverlay() {
@@ -23,9 +23,7 @@ export default function InitialOverlay() {
           <section className="flex flex-col space-y-3">
             <h1 className="z-50 flex items-center space-x-2">
               <span
-                className={`${rubikGlitch.className} bg-gradient-to-r 
-              from-rose-600 via-pink-500 to-sky-500 
-              bg-clip-text text-3xl text-transparent md:text-4xl`}
+                className={`${rubikGlitch.className} bg-gradient-to-r from-rose-600 via-pink-500 to-sky-500 bg-clip-text text-3xl text-transparent md:text-4xl`}
               >
                 Rabbit_keys
               </span>

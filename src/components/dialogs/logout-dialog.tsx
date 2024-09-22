@@ -1,5 +1,5 @@
 'use client';
-import { useLogout } from '@/mutations/useLogout';
+import { useLogout } from '@/mutations/use-logout';
 import React, { useRef } from 'react';
 import {
   AlertDialog,

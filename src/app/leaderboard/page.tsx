@@ -1,7 +1,6 @@
 'use client';
-
 import { robotoMono } from '@/lib/fonts';
-import { useLeaderboard } from '@/queries/useLeaderboard';
+import { useLeaderboard } from '@/queries/use-leaderboard';
 import { LineChart } from 'lucide-react';
 import React, { useState } from 'react';
 

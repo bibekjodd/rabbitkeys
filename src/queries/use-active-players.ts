@@ -15,9 +15,9 @@ export const useActivePlayers = (searchQuery: string, enabled: boolean) => {
   });
 };
 
-const fetchActivePlayers = async (searchQuery: string): Promise<User[]> => {
+export const fetchActivePlayers = async (searchQuery: string): Promise<User[]> => {
   try {
-    const { data } = await axios.get(`${backend_url}/api/active-players?q=${searchQuery}`, {
+    const { data } = await axios.get(`${backend_url}/api/players/active?q=${searchQuery}`, {
       withCredentials: true
     });
     return data.players;

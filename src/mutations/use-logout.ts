@@ -1,6 +1,6 @@
 import { backend_url } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
-import { useGameStore } from '@/store/useGameStore';
+import { useGameStore } from '@/store/use-game-store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
@@ -25,7 +25,7 @@ export const useLogout = () => {
 
 const logout = async () => {
   try {
-    return axios.get(`${backend_url}/api/logout`, { withCredentials: true });
+    return axios.post(`${backend_url}/api/auth/logout`, undefined, { withCredentials: true });
   } catch (error) {
     throw new Error(extractErrorMessage(error));
   }
