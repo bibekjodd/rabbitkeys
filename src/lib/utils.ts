@@ -1,15 +1,20 @@
-import { useGameStore } from '@/store/use-game-store';
+import { clearGame, endGame, switchMode, useGameStore } from '@/store/use-game-store';
 import { useLiveScore } from '@/store/use-live-score';
-import { Snapshot, useReplayStore } from '@/store/use-replay-store';
+import { Snapshot, updateReplaySnapshot } from '@/store/use-replay-store';
 import { TimelineData, useTypingStore } from '@/store/use-typing-store';
 import { AxiosError } from 'axios';
 import { clsx, type ClassValue } from 'clsx';
 import { toast } from 'sonner';
 import { twMerge } from 'tailwind-merge';
+import { backendUrl } from './constants';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
+
+export const redirectToLogin = () => {
+  window.open(`${backendUrl}/api/auth/login/google?redirect=${location.origin}`);
+};
 
 export const wait = async (duration?: number): Promise<boolean> => {
   return new Promise((res) => {
@@ -60,7 +65,7 @@ export const formatDuration = (duration: number): string => {
 
 export const canStartAfterDelay = () => {
   let { canStartTimeoutRef } = useGameStore.getState();
-  canStartTimeoutRef && clearTimeout(canStartTimeoutRef);
+  if (canStartTimeoutRef) clearTimeout(canStartTimeoutRef);
   canStartTimeoutRef = setTimeout(() => {
     useGameStore.setState({ canStart: true });
   }, 3000);
@@ -116,7 +121,7 @@ export const updateTimeline = () => {
     typed: '',
     letter: paragraph?.text[typedText.length]!
   };
-  useReplayStore.getState().updateSnapshot(replaySnapshot);
+  updateReplaySnapshot(replaySnapshot);
 };
 
 export const getRankSuffix = (rank: number): 'st' | 'nd' | 'rd' | 'th' => {
@@ -128,7 +133,6 @@ export const getRankSuffix = (rank: number): 'st' | 'nd' | 'rd' | 'th' => {
 };
 
 export const stopGameOnMaxTimeout = () => {
-  const { clearGame, switchMode, endGame } = useGameStore.getState();
   const FIVE_MINUTES = 5 * 60 * 1000;
   const maxTimeoutRef = setTimeout(() => {
     const { isStarted } = useGameStore.getState();
@@ -145,6 +149,6 @@ export const stopGameOnMaxTimeout = () => {
 
 export const clearGameTimeout = () => {
   const { maxTimeoutRef } = useGameStore.getState();
-  maxTimeoutRef && clearTimeout(maxTimeoutRef);
+  if (maxTimeoutRef) clearTimeout(maxTimeoutRef);
   useGameStore.setState({ maxTimeoutRef: null });
 };

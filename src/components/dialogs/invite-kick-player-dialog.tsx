@@ -1,6 +1,7 @@
 import { useDebounce } from '@/hooks/use-debounce';
-import { useInvitePlayer } from '@/mutations/use-invite-player';
-import { useKickPlayer } from '@/mutations/use-kick-player';
+import { invitePlayerKey, useInvitePlayer } from '@/mutations/use-invite-player';
+import { kickPlayerKey, useKickPlayer } from '@/mutations/use-kick-player';
+import { startRaceKey } from '@/mutations/use-start-race';
 import { useActivePlayers } from '@/queries/use-active-players';
 import { useProfile } from '@/queries/use-profile';
 import { useTrack } from '@/queries/use-track';
@@ -32,7 +33,7 @@ export default function InviteKickPlayerDialog({ children }: Props) {
   const pathname = usePathname();
   const isReplayStarted = useReplayStore((state) => state.isStarted);
   const trackId = useGameStore((state) => state.trackId);
-  const isStartingRace = useIsMutating({ mutationKey: ['start-race'] });
+  const isStartingRace = useIsMutating({ mutationKey: startRaceKey });
   const { data: searchResults, isLoading } = useActivePlayers(
     searchQuery,
     searchEnabled && isDialogOpen
@@ -160,9 +161,13 @@ function Player({
   isJoined: boolean;
 }) {
   const trackId = useGameStore((state) => state.trackId);
-  const isInvitingPlayer = !!useIsMutating({ mutationKey: ['invite-player', trackId, player.id] });
-  const isKickingPlayer = !!useIsMutating({ mutationKey: ['kick-player', trackId, player.id] });
-  const { mutate: invitePlayer } = useInvitePlayer({ player: player.id, trackId: trackId! });
+  const isInvitingPlayer = !!useIsMutating({
+    mutationKey: invitePlayerKey({ playerId: player.id, trackId: trackId! })
+  });
+  const isKickingPlayer = !!useIsMutating({
+    mutationKey: kickPlayerKey({ playerId: player.id, trackId: trackId! })
+  });
+  const { mutate: invitePlayer } = useInvitePlayer({ playerId: player.id, trackId: trackId! });
   const { mutate: kickPlayer } = useKickPlayer({ trackId: trackId!, playerId: player.id });
 
   const handleOnInvite = () => {

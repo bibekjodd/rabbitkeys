@@ -1,13 +1,12 @@
-import { useGameStore } from '@/store/use-game-store';
+import { switchMode, useGameStore } from '@/store/use-game-store';
 import { useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { useTrack } from '../queries/use-track';
+import { trackKey, useTrack } from '../queries/use-track';
 
 export const useFixTrackErrors = () => {
   const isMultiplayer = useGameStore((state) => state.isMultiplayer);
-  const switchMode = useGameStore((state) => state.switchMode);
   const trackId = useGameStore((state) => state.trackId);
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -15,20 +14,20 @@ export const useFixTrackErrors = () => {
 
   useEffect(() => {
     if (!trackId) {
-      queryClient.removeQueries({ queryKey: ['track'] });
+      queryClient.removeQueries({ queryKey: trackKey });
       switchMode({ isMultiplayer: false });
     }
-  }, [trackId, queryClient, switchMode]);
+  }, [trackId, queryClient]);
 
   useEffect(() => {
     if (!isMultiplayer) {
-      queryClient.removeQueries({ queryKey: ['track'] });
+      queryClient.removeQueries({ queryKey: trackKey });
     }
   }, [isMultiplayer, queryClient]);
 
   useEffect(() => {
     if (trackQuery.isError) {
-      queryClient.removeQueries({ queryKey: ['track'] });
+      queryClient.removeQueries({ queryKey: trackKey });
       toast.error(trackQuery.error.message);
       switchMode({ isMultiplayer: false });
       router.replace('/');
@@ -40,7 +39,7 @@ export const useFixTrackErrors = () => {
     if (trackQuery.isFetched && trackQuery.data?.id !== trackId) {
       trackQuery.refetch();
     }
-  }, [trackId, trackQuery, isMultiplayer, router, switchMode, queryClient]);
+  }, [trackId, trackQuery, isMultiplayer, router, queryClient]);
 
   return null;
 };

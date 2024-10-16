@@ -1,31 +1,33 @@
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
-import { useGameStore } from '@/store/use-game-store';
+import { trackKey } from '@/queries/use-track';
+import { switchMode } from '@/store/use-game-store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
-import { fetchParagraph } from '../queries/use-paragraph';
+import { fetchParagraph, paragraphKey } from '../queries/use-paragraph';
+
+export const createTrackKey = ['create-track'];
 
 export const useCreateTrack = () => {
   const queryClient = useQueryClient();
   const router = useRouter();
-  const switchMode = useGameStore((state) => state.switchMode);
 
   return useMutation({
-    mutationKey: ['create-track'],
+    mutationKey: createTrackKey,
     mutationFn: createTrack,
     onMutate() {
       toast.dismiss();
       toast.loading('Creating track...');
-      queryClient.removeQueries({ queryKey: ['track'] });
+      queryClient.removeQueries({ queryKey: trackKey });
     },
     onSuccess(track) {
       toast.dismiss();
-      queryClient.setQueryData(['track'], track);
+      queryClient.setQueryData(trackKey, track);
       queryClient.prefetchQuery({
-        queryKey: ['paragraph', track.paragraphId],
-        queryFn: () => fetchParagraph(track.paragraphId)
+        queryKey: paragraphKey(track.paragraphId),
+        queryFn: ({ signal }) => fetchParagraph({ paragraphId: track.paragraphId, signal })
       });
       router.replace(`/?track=${track.id}`);
       switchMode({ isMultiplayer: true, trackId: track.id });
@@ -39,7 +41,7 @@ export const useCreateTrack = () => {
 
 const createTrack = async (): Promise<Track> => {
   try {
-    const { data } = await axios.post(`${backend_url}/api/tracks`, {}, { withCredentials: true });
+    const { data } = await axios.post(`${backendUrl}/api/tracks`, {}, { withCredentials: true });
     return data.track;
   } catch (error) {
     throw new Error(extractErrorMessage(error));

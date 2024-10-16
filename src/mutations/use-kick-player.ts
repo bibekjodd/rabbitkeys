@@ -1,36 +1,39 @@
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
+import { trackKey } from '@/queries/use-track';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'sonner';
+
+type Options = { trackId: string; playerId: string };
+export const kickPlayerKey = (options: Options) => ['kick-player', options];
 
 export const useKickPlayer = ({ trackId, playerId }: Options) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['kick-player', trackId, playerId],
+    mutationKey: kickPlayerKey({ trackId, playerId }),
     mutationFn: () => kickPlayer({ trackId, playerId }),
     onError(err) {
       toast.dismiss();
       toast.error(`Could not kick player from the track! ${err.message}`);
     },
     onSuccess() {
-      const track = queryClient.getQueryData<Track>(['track']);
+      const track = queryClient.getQueryData<Track>(trackKey);
       if (!track) return;
 
       const updatedPlayers: Track['players'] = track.players.filter(
         (player) => player.id !== playerId
       );
       const updatedTrack = { ...track, players: updatedPlayers };
-      queryClient.setQueryData<Track>(['track'], updatedTrack);
+      queryClient.setQueryData<Track>(trackKey, updatedTrack);
     }
   });
 };
 
-type Options = { trackId: string; playerId: string };
 const kickPlayer = async ({ trackId, playerId }: Options) => {
   try {
-    return axios.get(`${backend_url}/api/players/${playerId}/kick/${trackId}`, {
+    return await axios.put(`${backendUrl}/api/tracks/${trackId}/kick/${playerId}`, undefined, {
       withCredentials: true
     });
   } catch (error) {

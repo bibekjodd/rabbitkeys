@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export const useInterval = (callback: Function, delay: number, enabled: boolean) => {
+export const useInterval = (callback: () => unknown, delay: number, enabled: boolean) => {
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
     if (enabled) {
@@ -10,7 +10,7 @@ export const useInterval = (callback: Function, delay: number, enabled: boolean)
     }
 
     return () => {
-      interval && clearInterval(interval);
+      if (interval) clearInterval(interval);
     };
   }, [enabled, callback, delay]);
 };

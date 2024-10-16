@@ -17,7 +17,7 @@ export const useLiveScore = create<State & Actions>((set, get) => ({
   scores: [],
   updateScore(newScore) {
     const oldScores = [...get().scores];
-    let updatedScores = oldScores.filter((score) => score.playerId !== newScore.playerId);
+    const updatedScores = oldScores.filter((score) => score.playerId !== newScore.playerId);
     updatedScores.push(newScore);
     set({ scores: [...updatedScores] });
   },

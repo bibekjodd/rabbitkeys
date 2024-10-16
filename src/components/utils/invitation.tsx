@@ -1,13 +1,12 @@
 'use client';
 import { useJoinTrack } from '@/mutations/use-join-track';
-import { useGameStore } from '@/store/use-game-store';
+import { updateInvitation, useGameStore } from '@/store/use-game-store';
 import { Check, X } from 'lucide-react';
 import { useCallback, useEffect } from 'react';
 import { toast } from 'sonner';
 
 export default function Invitation() {
   const invitation = useGameStore((state) => state.invitation);
-  const updateInvitation = useGameStore((state) => state.updateInvitation);
   const { mutate } = useJoinTrack();
 
   const joinTrack = useCallback(() => {
@@ -17,22 +16,25 @@ export default function Invitation() {
 
     toast.dismiss();
     toast.loading('Joining track...');
-    mutate(invitation.trackId, {
-      onSuccess() {
-        toast.dismiss();
-      },
-      onError(err) {
-        toast.dismiss();
-        const { isStarted, isReady } = useGameStore.getState();
-        if (!isStarted && !isReady) {
-          toast.error(`Could not join track! ${err.message}`);
+    mutate(
+      { signal: undefined, trackId: invitation.trackId },
+      {
+        onSuccess() {
+          toast.dismiss();
+        },
+        onError(err) {
+          toast.dismiss();
+          const { isStarted, isReady } = useGameStore.getState();
+          if (!isStarted && !isReady) {
+            toast.error(`Could not join track! ${err.message}`);
+          }
+        },
+        onSettled() {
+          updateInvitation(null);
         }
-      },
-      onSettled() {
-        updateInvitation(null);
       }
-    });
-  }, [invitation, mutate, updateInvitation]);
+    );
+  }, [invitation, mutate]);
 
   useEffect(() => {
     if (!invitation) return;
@@ -55,7 +57,7 @@ export default function Invitation() {
       ),
       { duration: 10_000 }
     );
-  }, [invitation, mutate, updateInvitation, joinTrack]);
+  }, [invitation, mutate, joinTrack]);
 
   return null;
 }

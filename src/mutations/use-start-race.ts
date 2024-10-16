@@ -1,38 +1,39 @@
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
-import { useGameStore } from '@/store/use-game-store';
+import { trackKey } from '@/queries/use-track';
+import { clearGame, startGame } from '@/store/use-game-store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { toast } from 'sonner';
-import { fetchParagraph } from '../queries/use-paragraph';
+import { fetchParagraph, paragraphKey } from '../queries/use-paragraph';
+
+export const startRaceKey = ['start-race'];
 
 export const useStartRace = () => {
-  const startGame = useGameStore((state) => state.startGame);
-  const clearGame = useGameStore((state) => state.clearGame);
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['start-race'],
+    mutationKey: startRaceKey,
     mutationFn: startRace,
     async onSuccess(track) {
-      queryClient.setQueryData(['track'], track);
+      queryClient.setQueryData(trackKey, track);
       await startGame();
       queryClient.prefetchQuery({
-        queryKey: ['paragraph', track.nextParagraphId],
-        queryFn: () => fetchParagraph(track.nextParagraphId)
+        queryKey: paragraphKey(track.nextParagraphId),
+        queryFn: ({ signal }) => fetchParagraph({ paragraphId: track.nextParagraphId, signal })
       });
     },
     onError(err) {
       clearGame();
       toast.error(`Could not start race. ${err.message}`);
-      queryClient.invalidateQueries({ queryKey: ['track'] });
+      queryClient.invalidateQueries({ queryKey: trackKey });
     }
   });
 };
 
 const startRace = async (trackId: string): Promise<Track> => {
   try {
-    const { data } = await axios.get(`${backend_url}/api/races/${trackId}`, {
+    const { data } = await axios.put(`${backendUrl}/api/tracks/${trackId}/start-race`, undefined, {
       withCredentials: true
     });
     return data.track;

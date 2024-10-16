@@ -1,5 +1,7 @@
 'use client';
 import { useCreateTrack } from '@/mutations/use-create-track';
+import { joinTrackKey } from '@/mutations/use-join-track';
+import { leaveTrackKey } from '@/mutations/use-leave-track';
 import { useProfile } from '@/queries/use-profile';
 import { useTrack } from '@/queries/use-track';
 import { useGameStore } from '@/store/use-game-store';
@@ -16,13 +18,13 @@ export default function CreateTrackButton({ onClick, children, ...props }: Butto
   const { mutate, isPending } = useCreateTrack();
   const { data: track, isLoading: isLoadingTrack, isFetching: isFetchingTrack } = useTrack();
   const { data: profile, isError: isProfileError } = useProfile();
-  const isJoiningTrack = useIsMutating({ mutationKey: ['join-track'] });
-  const isLeavingTrack = useIsMutating({ mutationKey: ['leave-track'] });
+  const isJoiningTrack = useIsMutating({ mutationKey: joinTrackKey });
+  const isLeavingTrack = useIsMutating({ mutationKey: leaveTrackKey });
   const pathname = usePathname();
   const isReplayStarted = useReplayStore((state) => state.isStarted);
 
   const createTrack = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    onClick && onClick(e);
+    if (onClick) onClick(e);
     if (isReady || isStarted) {
       toast.error('Exit from the current race first');
       return;

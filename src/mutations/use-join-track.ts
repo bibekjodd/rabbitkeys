@@ -1,24 +1,25 @@
-import { fetchParagraph } from '@/queries/use-paragraph';
-import { fetchTrackData } from '@/queries/use-track';
-import { useGameStore } from '@/store/use-game-store';
+import { fetchParagraph, paragraphKey } from '@/queries/use-paragraph';
+import { fetchTrackData, trackKey } from '@/queries/use-track';
+import { switchMode } from '@/store/use-game-store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
+export const joinTrackKey = ['join-track'];
+
 export const useJoinTrack = () => {
   const queryClient = useQueryClient();
-  const switchMode = useGameStore((state) => state.switchMode);
   const router = useRouter();
 
   return useMutation({
-    mutationKey: ['join-track'],
+    mutationKey: joinTrackKey,
     mutationFn: fetchTrackData,
     onSuccess(track) {
       switchMode({ isMultiplayer: true, trackId: track.id });
-      queryClient.setQueryData<Track>(['track'], track);
+      queryClient.setQueryData<Track>(trackKey, track);
       router.replace(`/?track=${track.id}`);
       queryClient.prefetchQuery({
-        queryKey: ['paragraph', track.paragraphId],
-        queryFn: () => fetchParagraph(track.paragraphId)
+        queryKey: paragraphKey(track.paragraphId),
+        queryFn: ({ signal }) => fetchParagraph({ paragraphId: track.paragraphId, signal })
       });
     }
   });

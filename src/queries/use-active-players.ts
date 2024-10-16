@@ -1,26 +1,34 @@
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-export const useActivePlayers = (searchQuery: string, enabled: boolean) => {
+export const activePlayersKey = (search: string) => ['active-player', search];
+
+export const useActivePlayers = (search: string, enabled: boolean) => {
   return useQuery({
-    queryKey: ['active-players', searchQuery],
-    queryFn: () => fetchActivePlayers(searchQuery),
+    queryKey: activePlayersKey(search),
+    queryFn: ({ signal }) => fetchActivePlayers({ signal, search }),
     enabled,
-    refetchInterval: 30_000,
     refetchOnMount: true,
     refetchOnWindowFocus: true,
-    gcTime: 60_000
+    gcTime: 30_000
   });
 };
 
-export const fetchActivePlayers = async (searchQuery: string): Promise<User[]> => {
+export const fetchActivePlayers = async ({
+  search,
+  signal
+}: {
+  signal: AbortSignal;
+  search: string;
+}): Promise<User[]> => {
   try {
-    const { data } = await axios.get(`${backend_url}/api/players/active?q=${searchQuery}`, {
-      withCredentials: true
-    });
-    return data.players;
+    const { data } = await axios.get<{ users: User[] }>(
+      `${backendUrl}/api/users?q=${search}&active=true`,
+      { signal }
+    );
+    return data.users;
   } catch (error) {
     throw new Error(extractErrorMessage(error));
   }

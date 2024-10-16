@@ -1,12 +1,13 @@
 'use client';
 import { robotoMono } from '@/lib/fonts';
 import { scrollIntoView, wait } from '@/lib/utils';
-import { useUpdateResult } from '@/mutations/use-update-result';
-import { useParagraph } from '@/queries/use-paragraph';
+import { nextParagraphKey } from '@/mutations/use-next-paragraph';
+import { usePostResult } from '@/mutations/use-post-result';
+import { paragraphKey, useParagraph } from '@/queries/use-paragraph';
 import { useTrack } from '@/queries/use-track';
 import { useGameStore } from '@/store/use-game-store';
 import { useReplayStore } from '@/store/use-replay-store';
-import { useTypingStore } from '@/store/use-typing-store';
+import { loadParagraph, onParagraphInput, useTypingStore } from '@/store/use-typing-store';
 import { useIsMutating, useQueryClient } from '@tanstack/react-query';
 import { ChevronsRight, Loader2, MonitorPlay, MousePointer } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -23,10 +24,8 @@ export default function Paragraph() {
   const isStarted = useGameStore((state) => state.isStarted);
   const isReplayStarted = useReplayStore((state) => state.isStarted);
   const typedText = useTypingStore((state) => state.typedText);
-  const loadParagraph = useTypingStore((state) => state.loadParagraph);
-  const onParagraphInput = useTypingStore((state) => state.onParagraphInput);
   const isTypedIncorrect = useTypingStore((state) => state.isTypedIncorrect);
-  const isFetchingNextParagraph = !!useIsMutating({ mutationKey: ['next-paragraph'] });
+  const isFetchingNextParagraph = !!useIsMutating({ mutationKey: nextParagraphKey });
   const letterIndex = typedText.length;
   const queryClient = useQueryClient();
   const { data: track } = useTrack();
@@ -36,7 +35,7 @@ export default function Paragraph() {
     isFetching: isFetchingParagraph,
     error: paragraphError
   } = useParagraph(track?.paragraphId);
-  const { mutate: updateResult } = useUpdateResult();
+  const { mutate: updateResult } = usePostResult();
 
   const handleParagraphInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isStarted || !isFocused) {
@@ -58,18 +57,18 @@ export default function Paragraph() {
       scrollIntoView('typing-stats');
     });
     updateResult();
-    queryClient.setQueryData(['paragraph', null], null);
-    const nextParagraph = queryClient.getQueryData(['paragraph', 'next']);
+    queryClient.setQueryData(paragraphKey(null), null);
+    const nextParagraph = queryClient.getQueryData(paragraphKey('next'));
     if (nextParagraph) {
-      queryClient.setQueryData(['paragraph', null], nextParagraph);
+      queryClient.setQueryData(paragraphKey(null), nextParagraph);
     } else {
-      queryClient.invalidateQueries({ queryKey: ['paragraph', null] });
+      queryClient.invalidateQueries({ queryKey: paragraphKey(null) });
     }
   };
 
   useEffect(() => {
     if (paragraph) loadParagraph(paragraph);
-  }, [paragraph, loadParagraph]);
+  }, [paragraph]);
 
   const focusInput = useCallback(
     (e: KeyboardEvent) => {

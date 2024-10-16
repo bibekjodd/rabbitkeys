@@ -1,6 +1,5 @@
 import { scrollIntoView, wait } from '@/lib/utils';
 import { create } from 'zustand';
-import { useGameStore } from './use-game-store';
 
 export type Snapshot = {
   letter: string;
@@ -23,24 +22,9 @@ interface ReplayStore {
   isReplayAvailable: boolean;
   playTimeoutRef: NodeJS.Timeout | null;
   playDelayTimeoutRef: NodeJS.Timeout | null;
-
-  updateSnapshot: (snapshot: Snapshot) => void;
-  start: () => void;
-  play: () => void;
-  pause: () => void;
-  stop: () => void;
-  restart: () => void;
-  onPlay: () => void;
-
-  skipForward: () => void;
-  skipBackward: () => void;
-  seek: (index: number) => void;
-
-  onTypingStart: () => void;
-  onTypingComplete: (paragraph: Paragraph) => void;
 }
 
-export const useReplayStore = create<ReplayStore>((set, get) => ({
+export const useReplayStore = create<ReplayStore>(() => ({
   paragraph: null,
   data: [],
   currentIndex: 0,
@@ -50,144 +34,142 @@ export const useReplayStore = create<ReplayStore>((set, get) => ({
   isPaused: false,
   isReplayAvailable: false,
   playTimeoutRef: null,
-  playDelayTimeoutRef: null,
-
-  updateSnapshot(snapshot) {
-    let { data, isStarted, isReplayAvailable, isReady } = get();
-    if (isStarted || isReady || isReplayAvailable) return;
-    set({ data: [...data, snapshot] });
-  },
-
-  async start() {
-    const { isReady, isStarted, stop, isReplayAvailable, paragraph, data } = get();
-    if (!isReplayAvailable || !paragraph || !data.length) {
-      return stop();
-    }
-    if (!isReady || !isStarted) {
-      stop();
-    }
-    if (isStarted || isReady) return;
-    scrollIntoView('body');
-    set({ isStarted: true, isPaused: false, countdown: 3, isReady: true, currentIndex: 0 });
-    await wait(1000);
-    set({ countdown: 2 });
-    await wait(1000);
-    set({ countdown: 1 });
-    await wait(1000);
-    set({ countdown: 0 });
-    await wait(500);
-    set({ isReady: false, isStarted: true, isPaused: false, currentIndex: 0 });
-    scrollIntoView('body');
-    get().onPlay();
-  },
-
-  pause() {
-    const { isReady, isStarted, playTimeoutRef } = get();
-    if (!isStarted || isReady) return;
-    playTimeoutRef && clearTimeout(playTimeoutRef);
-    set({ isPaused: true, playTimeoutRef: null });
-  },
-
-  play() {
-    const { isReady, isStarted, playTimeoutRef, onPlay } = get();
-    if (!isStarted || isReady) return;
-    playTimeoutRef && clearTimeout(playTimeoutRef);
-    set({ isPaused: false, playTimeoutRef: null });
-    onPlay();
-  },
-
-  stop() {
-    const { isReady, isStarted, playTimeoutRef } = get();
-    if (!isStarted || isReady) return;
-    playTimeoutRef && clearTimeout(playTimeoutRef);
-    set({
-      isStarted: false,
-      isPaused: false,
-      countdown: 3,
-      isReady: false,
-      playTimeoutRef: null
-    });
-  },
-
-  restart() {
-    if (get().isReady) return;
-    get().stop();
-    get().start();
-  },
-
-  onPlay() {
-    const { isPaused, isStarted, data, currentIndex, stop, isReady, playTimeoutRef, onPlay } =
-      get();
-    playTimeoutRef && clearTimeout(playTimeoutRef);
-    set({ playTimeoutRef: null });
-    if (!isStarted || isPaused || isReady) {
-      return;
-    }
-    if (currentIndex >= data.length) {
-      return stop();
-    }
-
-    let delay = 0;
-    if (currentIndex <= 0) {
-      delay = data[0].duration;
-    } else {
-      delay = data[currentIndex].duration - data[currentIndex - 1].duration;
-    }
-    if (delay < 0) delay = 0;
-    const currentTimeoutRef = setTimeout(() => {
-      set({ currentIndex: currentIndex + 1 });
-      onPlay();
-    }, delay);
-    set({ playTimeoutRef: currentTimeoutRef });
-  },
-
-  skipBackward() {
-    const { currentIndex, data, seek } = get();
-    let targetIndex = currentIndex;
-    while (targetIndex > 0) {
-      targetIndex--;
-      if (data[targetIndex].typed === ' ' && data[targetIndex].letter === ' ') {
-        break;
-      }
-    }
-    seek(targetIndex);
-  },
-
-  skipForward() {
-    const { currentIndex, data, seek } = get();
-    let targetIndex = currentIndex;
-    while (targetIndex < data.length - 1) {
-      targetIndex++;
-      if (data[targetIndex].typed === ' ' && data[targetIndex].letter === ' ') {
-        break;
-      }
-    }
-    seek(targetIndex);
-  },
-
-  seek(index) {
-    const { playTimeoutRef, playDelayTimeoutRef, data, onPlay } = get();
-    playTimeoutRef && clearTimeout(playTimeoutRef);
-    playDelayTimeoutRef && clearTimeout(playDelayTimeoutRef);
-    set({ playTimeoutRef: null, playDelayTimeoutRef: null });
-
-    if (index < 0) index = 0;
-    if (index >= data.length) {
-      index = data.length - 1;
-    }
-
-    set({ currentIndex: index });
-    const newPlayDelayTimeoutRef = setTimeout(() => {
-      onPlay();
-    }, 300);
-    set({ playDelayTimeoutRef: newPlayDelayTimeoutRef });
-  },
-
-  onTypingStart() {
-    set({ isReplayAvailable: false, data: [] });
-  },
-
-  onTypingComplete(paragraph) {
-    set({ isReplayAvailable: !useGameStore.getState().isMultiplayer, currentIndex: 0, paragraph });
-  }
+  playDelayTimeoutRef: null
 }));
+
+export function updateReplaySnapshot(snapshot: Snapshot) {
+  const { data, isStarted, isReplayAvailable, isReady } = useReplayStore.getState();
+  if (isStarted || isReady || isReplayAvailable) return;
+  useReplayStore.setState({ data: [...data, snapshot] });
+}
+
+export async function startReplay() {
+  const { isReady, isStarted, isReplayAvailable, paragraph, data } = useReplayStore.getState();
+  if (!isReplayAvailable || !paragraph || !data.length) {
+    return stopReplay();
+  }
+  if (!isReady || !isStarted) {
+    stopReplay();
+  }
+  if (isStarted || isReady) return;
+  scrollIntoView('body');
+  useReplayStore.setState({
+    isStarted: true,
+    isPaused: false,
+    countdown: 3,
+    isReady: true,
+    currentIndex: 0
+  });
+  await wait(1000);
+  useReplayStore.setState({ countdown: 2 });
+  await wait(1000);
+  useReplayStore.setState({ countdown: 1 });
+  await wait(1000);
+  useReplayStore.setState({ countdown: 0 });
+  await wait(500);
+  useReplayStore.setState({ isReady: false, isStarted: true, isPaused: false, currentIndex: 0 });
+  scrollIntoView('body');
+  onPlayReplay();
+}
+
+export function pauseReplay() {
+  const { isReady, isStarted, playTimeoutRef } = useReplayStore.getState();
+  if (!isStarted || isReady) return;
+  if (playTimeoutRef) clearTimeout(playTimeoutRef);
+  useReplayStore.setState({ isPaused: true, playTimeoutRef: null });
+}
+
+export function playReplay() {
+  const { isReady, isStarted, playTimeoutRef } = useReplayStore.getState();
+  if (!isStarted || isReady) return;
+  if (playTimeoutRef) clearTimeout(playTimeoutRef);
+  useReplayStore.setState({ isPaused: false, playTimeoutRef: null });
+  onPlayReplay();
+}
+
+export function stopReplay() {
+  const { isReady, isStarted, playTimeoutRef } = useReplayStore.getState();
+  if (!isStarted || isReady) return;
+  if (playTimeoutRef) clearTimeout(playTimeoutRef);
+  useReplayStore.setState({
+    isStarted: false,
+    isPaused: false,
+    countdown: 3,
+    isReady: false,
+    playTimeoutRef: null
+  });
+}
+
+export function restartReplay() {
+  if (useReplayStore.getState().isReady) return;
+  stopReplay();
+  startReplay();
+}
+
+function onPlayReplay() {
+  const { isPaused, isStarted, data, currentIndex, isReady, playTimeoutRef } =
+    useReplayStore.getState();
+  if (playTimeoutRef) clearTimeout(playTimeoutRef);
+  useReplayStore.setState({ playTimeoutRef: null });
+  if (!isStarted || isPaused || isReady) {
+    return;
+  }
+  if (currentIndex >= data.length) {
+    return stopReplay();
+  }
+
+  let delay = 0;
+  if (currentIndex <= 0) {
+    delay = data[0].duration;
+  } else {
+    delay = data[currentIndex].duration - data[currentIndex - 1].duration;
+  }
+  if (delay < 0) delay = 0;
+  const currentTimeoutRef = setTimeout(() => {
+    useReplayStore.setState({ currentIndex: currentIndex + 1 });
+    onPlayReplay();
+  }, delay);
+  useReplayStore.setState({ playTimeoutRef: currentTimeoutRef });
+}
+
+export function skipReplayBackward() {
+  const { currentIndex, data } = useReplayStore.getState();
+  let targetIndex = currentIndex;
+  while (targetIndex > 0) {
+    targetIndex--;
+    if (data[targetIndex].typed === ' ' && data[targetIndex].letter === ' ') {
+      break;
+    }
+  }
+  seekReplay(targetIndex);
+}
+
+export function skipReplayForward() {
+  const { currentIndex, data } = useReplayStore.getState();
+  let targetIndex = currentIndex;
+  while (targetIndex < data.length - 1) {
+    targetIndex++;
+    if (data[targetIndex].typed === ' ' && data[targetIndex].letter === ' ') {
+      break;
+    }
+  }
+  seekReplay(targetIndex);
+}
+
+export function seekReplay(index: number) {
+  const { playTimeoutRef, playDelayTimeoutRef, data } = useReplayStore.getState();
+  if (playTimeoutRef) clearTimeout(playTimeoutRef);
+  if (playDelayTimeoutRef) clearTimeout(playDelayTimeoutRef);
+  useReplayStore.setState({ playTimeoutRef: null, playDelayTimeoutRef: null });
+
+  if (index < 0) index = 0;
+  if (index >= data.length) {
+    index = data.length - 1;
+  }
+
+  useReplayStore.setState({ currentIndex: index });
+  const newPlayDelayTimeoutRef = setTimeout(() => {
+    onPlayReplay();
+  }, 300);
+  useReplayStore.setState({ playDelayTimeoutRef: newPlayDelayTimeoutRef });
+}

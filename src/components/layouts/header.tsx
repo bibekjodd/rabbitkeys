@@ -1,5 +1,5 @@
 'use client';
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { robotoMono, rubikGlitch } from '@/lib/fonts';
 import { useProfile } from '@/queries/use-profile';
 import { useGameStore } from '@/store/use-game-store';
@@ -86,7 +86,7 @@ export default function Header() {
             <button
               onClick={() =>
                 window.open(
-                  `${backend_url}/api/auth/login/google?redirect=${location.origin}`,
+                  `${backendUrl}/api/auth/login/google?redirect=${location.origin}`,
                   '_blank'
                 )
               }

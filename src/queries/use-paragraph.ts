@@ -1,28 +1,31 @@
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
+export const paragraphKey = (paragraphId: string | null | undefined) => ['paragraph', paragraphId];
+
 export const useParagraph = (paragraphId: string | undefined | null) => {
   return useQuery({
-    queryKey: ['paragraph', paragraphId || null],
-    queryFn: () => fetchParagraph(paragraphId),
-    refetchOnMount: false,
-    refetchOnReconnect: false,
-    refetchOnWindowFocus: false,
-    retry: 2
+    queryKey: paragraphKey(paragraphId),
+    queryFn: ({ signal }) => fetchParagraph({ paragraphId, signal })
   });
 };
 
-export const fetchParagraph = async (
-  paragraphId: string | null | undefined
-): Promise<Paragraph> => {
+type Options = {
+  signal: AbortSignal | undefined;
+  paragraphId: string | null | undefined;
+  skip?: string;
+};
+export const fetchParagraph = async ({
+  signal,
+  paragraphId,
+  skip
+}: Options): Promise<Paragraph> => {
   try {
-    let url: string = `${backend_url}/api/paragraphs`;
-    if (paragraphId) url += `/${paragraphId}`;
-    const { data } = await axios.get(url, {
-      withCredentials: true
-    });
+    const url = new URL(`${backendUrl}/api/paragraphs/${paragraphId || 'random'}`);
+    if (skip) url.searchParams.set('skip', skip);
+    const { data } = await axios.get<{ paragraph: Paragraph }>(url.href, { signal });
     return data.paragraph;
   } catch (error) {
     throw new Error(extractErrorMessage(error));

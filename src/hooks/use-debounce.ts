@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const useDebounce = (dependency: any, delay: number) => {
+export const useDebounce = (dependency: unknown, delay: number) => {
   const [canStart, setCanStart] = useState(false);
 
   useEffect(() => {

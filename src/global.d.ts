@@ -5,6 +5,7 @@ declare global {
   namespace NodeJS {
     interface ProcessEnv {
       readonly NEXT_PUBLIC_PUSHER_KEY: string;
+      readonly NEXT_PUBLIC_PUSHER_CLUSTER: string;
       readonly NEXT_PUBLIC_BACKEND_URL: string;
     }
   }

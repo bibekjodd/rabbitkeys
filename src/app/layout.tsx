@@ -3,11 +3,11 @@ import GlowingBackGround from '@/components/utils/glowing-background';
 import Invitation from '@/components/utils/invitation';
 import QueryProvider from '@/providers/query-provider';
 import Workers from '@/workers';
+import { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { Suspense } from 'react';
 import { Toaster } from 'sonner';
 import './globals.css';
-import { Metadata } from 'next';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -44,7 +44,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="dark">
       <body
         id="body"
-        className={`${inter.className}bg-neutral-900 flex min-h-screen flex-col text-white`}
+        className={`${inter.className} flex min-h-screen flex-col bg-neutral-900 text-white`}
       >
         <QueryProvider>
           <Toaster toastOptions={{ duration: 3000 }} closeButton richColors theme="dark" />

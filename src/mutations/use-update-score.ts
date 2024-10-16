@@ -1,11 +1,11 @@
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
 import { useGameStore } from '@/store/use-game-store';
 import { useTypingStore } from '@/store/use-typing-store';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import { useState } from 'react';
-import { fetchTrackData } from '../queries/use-track';
+import { fetchTrackData, trackKey } from '../queries/use-track';
 
 export const useUpdateScore = () => {
   const [previousProgress, setPreviousProgress] = useState<number | null>(null);
@@ -33,8 +33,8 @@ export const useUpdateScore = () => {
       const { trackId } = useGameStore.getState();
       if (!trackId) return;
       queryClient.fetchQuery({
-        queryKey: ['track'],
-        queryFn: () => fetchTrackData(trackId)
+        queryKey: trackKey,
+        queryFn: ({ signal }) => fetchTrackData({ trackId, signal })
       });
     }
   });
@@ -50,7 +50,7 @@ type Options = {
 };
 const updateScore = async (data: Options) => {
   try {
-    const response = await axios.put(`${backend_url}/api/races/${data.trackId}`, data, {
+    const response = await axios.put(`${backendUrl}/api/tracks/${data.trackId}/score`, data, {
       withCredentials: true
     });
     return response.data.track;

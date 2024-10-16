@@ -1,9 +1,12 @@
+import { createTrackKey } from '@/mutations/use-create-track';
+import { joinTrackKey } from '@/mutations/use-join-track';
+import { leaveTrackKey } from '@/mutations/use-leave-track';
 import { useNextParagraph } from '@/mutations/use-next-paragraph';
-import { useStartRace } from '@/mutations/use-start-race';
+import { startRaceKey, useStartRace } from '@/mutations/use-start-race';
 import { useParagraph } from '@/queries/use-paragraph';
 import { useProfile } from '@/queries/use-profile';
 import { useTrack } from '@/queries/use-track';
-import { useGameStore } from '@/store/use-game-store';
+import { clearGame, startGame, useGameStore } from '@/store/use-game-store';
 import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
@@ -14,8 +17,6 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement>;
 
 export default function StartButton({ onClick, children, ...props }: Props) {
   const isMultiplayer = useGameStore((state) => state.isMultiplayer);
-  const clearGame = useGameStore((state) => state.clearGame);
-  const startGame = useGameStore((state) => state.startGame);
   const isReady = useGameStore((state) => state.isReady);
   const isStarted = useGameStore((state) => state.isStarted);
   const canStart = useGameStore((state) => state.canStart);
@@ -24,16 +25,16 @@ export default function StartButton({ onClick, children, ...props }: Props) {
   const { mutate: startMultiplayer } = useStartRace();
   const { mutate: fetchNextParagraph } = useNextParagraph();
   const { data: profile } = useProfile();
-  const isLeavingTrack = useIsMutating({ mutationKey: ['leave-track'] });
-  const isJoiningTrack = useIsMutating({ mutationKey: ['join-track'] });
-  const isCreatingTrack = useIsMutating({ mutationKey: ['create-track'] });
-  const isStartingRace = useIsMutating({ mutationKey: ['start-race'] });
+  const isLeavingTrack = useIsMutating({ mutationKey: leaveTrackKey });
+  const isJoiningTrack = useIsMutating({ mutationKey: joinTrackKey });
+  const isCreatingTrack = useIsMutating({ mutationKey: createTrackKey });
+  const isStartingRace = useIsMutating({ mutationKey: startRaceKey });
   const pathname = usePathname();
   const isReplayStarted = useReplayStore((state) => state.isStarted);
 
   const handleStartButtonClicked = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
-      onClick && onClick(e);
+      if (onClick) onClick(e);
       toast.dismiss();
       if (isStarted || isReady) {
         toast.dismiss();
@@ -57,13 +58,11 @@ export default function StartButton({ onClick, children, ...props }: Props) {
       startMultiplayer(track.id);
     },
     [
-      clearGame,
       isMultiplayer,
       isReady,
       isStarted,
       onClick,
       paragraph,
-      startGame,
       startMultiplayer,
       track,
       fetchNextParagraph

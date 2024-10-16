@@ -1,25 +1,28 @@
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
+import { trackKey } from '@/queries/use-track';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 
-export const useInvitePlayer = ({ player, trackId }: Options) => {
+type KeyOptions = { playerId: string; trackId: string };
+export const invitePlayerKey = (options: KeyOptions) => ['invite-player', options];
+
+export const useInvitePlayer = (options: KeyOptions) => {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationKey: ['invite-player', trackId, player],
-    mutationFn: () => invitePlayer({ trackId, player }),
+    mutationKey: invitePlayerKey(options),
+    mutationFn: () => invitePlayer(options),
     gcTime: 10_000,
     onError() {
-      queryClient.invalidateQueries({ queryKey: ['track'] });
+      queryClient.invalidateQueries({ queryKey: trackKey });
     }
   });
 };
 
-type Options = { player: string; trackId: string };
-const invitePlayer = async ({ trackId, player }: Options) => {
+const invitePlayer = async ({ trackId, playerId }: KeyOptions) => {
   try {
-    return axios.get(`${backend_url}/api/players/${player}/invite/${trackId}`, {
+    return await axios.put(`${backendUrl}/api/tracks/${trackId}/invite/${playerId}`, undefined, {
       withCredentials: true
     });
   } catch (err) {

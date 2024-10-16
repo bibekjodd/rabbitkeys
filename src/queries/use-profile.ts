@@ -1,22 +1,23 @@
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
+export const profileKey = ['profile'];
+
 export const useProfile = () => {
   return useQuery({
-    queryKey: ['profile'],
+    queryKey: profileKey,
     queryFn: fetchProfile,
-    refetchOnWindowFocus: true,
-    refetchOnMount: false,
-    refetchOnReconnect: true
+    refetchOnWindowFocus: true
   });
 };
 
-export const fetchProfile = async (): Promise<User> => {
+export const fetchProfile = async ({ signal }: { signal: AbortSignal }): Promise<User> => {
   try {
-    const { data } = await axios.get(`${backend_url}/api/users/profile`, {
-      withCredentials: true
+    const { data } = await axios.get<{ user: User }>(`${backendUrl}/api/users/profile`, {
+      withCredentials: true,
+      signal
     });
     return data.user;
   } catch (error) {

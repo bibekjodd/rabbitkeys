@@ -1,5 +1,5 @@
 import { useGameStore } from '@/store/use-game-store';
-import { useReplayStore } from '@/store/use-replay-store';
+import { startReplay, useReplayStore } from '@/store/use-replay-store';
 import { usePathname } from 'next/navigation';
 import { ButtonHTMLAttributes } from 'react';
 
@@ -7,7 +7,6 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement>;
 export default function WatchReplayButton({ onClick, children, ...props }: Props) {
   const isReplayAvailable = useReplayStore((state) => state.isReplayAvailable);
   const isReplayStarted = useReplayStore((state) => state.isStarted);
-  const startReplay = useReplayStore((state) => state.start);
   const pathname = usePathname();
 
   const isGameReady = useGameStore((state) => state.isReady);
@@ -17,7 +16,7 @@ export default function WatchReplayButton({ onClick, children, ...props }: Props
   const isMultiplayer = useGameStore((state) => state.isMultiplayer);
 
   const watchReplay = (e: React.MouseEvent<HTMLButtonElement>) => {
-    onClick && onClick(e);
+    if (onClick) onClick(e);
     startReplay();
   };
 

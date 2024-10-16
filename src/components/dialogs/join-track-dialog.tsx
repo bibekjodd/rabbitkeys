@@ -8,7 +8,10 @@ import {
   DialogTrigger
 } from '@/components/ui/dialog';
 import { validateUrl } from '@/lib/utils';
+import { createTrackKey } from '@/mutations/use-create-track';
 import { useJoinTrack } from '@/mutations/use-join-track';
+import { leaveTrackKey } from '@/mutations/use-leave-track';
+import { startRaceKey } from '@/mutations/use-start-race';
 import { useProfile } from '@/queries/use-profile';
 import { useGameStore } from '@/store/use-game-store';
 import { useReplayStore } from '@/store/use-replay-store';
@@ -28,9 +31,9 @@ export function JoinTrackDialog({ children }: Props) {
   const isMultiplayer = useGameStore((state) => state.isMultiplayer);
   const { data: profile, isError: isProfileError } = useProfile();
   const { mutate, isPending: isJoiningTrack } = useJoinTrack();
-  const isCreatingTrack = useIsMutating({ mutationKey: ['create-track'] });
-  const isLeavingTrack = useIsMutating({ mutationKey: ['leave-track'] });
-  const isStartingRace = useIsMutating({ mutationKey: ['start-race'] });
+  const isCreatingTrack = useIsMutating({ mutationKey: createTrackKey });
+  const isLeavingTrack = useIsMutating({ mutationKey: leaveTrackKey });
+  const isStartingRace = useIsMutating({ mutationKey: startRaceKey });
   const pathname = usePathname();
   const isReplayStarted = useReplayStore((state) => state.isStarted);
 
@@ -55,15 +58,18 @@ export function JoinTrackDialog({ children }: Props) {
       toast.error('Provide the track link or track id to join');
       return;
     }
-    mutate(trackId, {
-      onSuccess() {
-        closeButtonRef.current?.click();
-      },
-      onError(err) {
-        toast.dismiss();
-        toast.error(err.message);
+    mutate(
+      { trackId, signal: undefined },
+      {
+        onSuccess() {
+          closeButtonRef.current?.click();
+        },
+        onError(err) {
+          toast.dismiss();
+          toast.error(err.message);
+        }
       }
-    });
+    );
   }, [isJoiningTrack, mutate, trackId]);
 
   if (

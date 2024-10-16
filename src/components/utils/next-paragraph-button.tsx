@@ -1,6 +1,10 @@
 'use client';
+import { createTrackKey } from '@/mutations/use-create-track';
+import { joinTrackKey } from '@/mutations/use-join-track';
+import { leaveTrackKey } from '@/mutations/use-leave-track';
 import { useNextParagraph } from '@/mutations/use-next-paragraph';
-import { useParagraph } from '@/queries/use-paragraph';
+import { startRaceKey } from '@/mutations/use-start-race';
+import { paragraphKey, useParagraph } from '@/queries/use-paragraph';
 import { useGameStore } from '@/store/use-game-store';
 import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating, useQueryClient } from '@tanstack/react-query';
@@ -20,24 +24,24 @@ export default function NextParagraphButton({
   const isReady = useGameStore((state) => state.isReady);
   const { mutate: fetchNextParagraph } = useNextParagraph();
   const { isLoading: isLoadingParagraph } = useParagraph(null);
-  const isCreatingTrack = useIsMutating({ mutationKey: ['create-track'] });
-  const isLeavingTrack = useIsMutating({ mutationKey: ['leave-track'] });
-  const isJoiningTrack = useIsMutating({ mutationKey: ['join-track'] });
-  const isStartingRace = useIsMutating({ mutationKey: ['start-race'] });
+  const isCreatingTrack = useIsMutating({ mutationKey: createTrackKey });
+  const isLeavingTrack = useIsMutating({ mutationKey: leaveTrackKey });
+  const isJoiningTrack = useIsMutating({ mutationKey: joinTrackKey });
+  const isStartingRace = useIsMutating({ mutationKey: startRaceKey });
   const pathname = usePathname();
   const isReplayReady = useReplayStore((state) => state.isReady);
   const isReplayStarted = useReplayStore((state) => state.isStarted);
 
   const handleButtonClicked = useCallback(
     async (e: React.MouseEvent<HTMLButtonElement>) => {
-      onClick && onClick(e);
+      if (onClick) onClick(e);
       if (isMultiplayer || isStarted) return;
-      const nextParagraph = queryClient.getQueryData(['paragraph', 'next']);
-      if (nextParagraph) queryClient.setQueryData(['paragraph', null], nextParagraph);
+      const nextParagraph = queryClient.getQueryData(paragraphKey('next'));
+      if (nextParagraph) queryClient.setQueryData(paragraphKey(null), nextParagraph);
       else {
-        await queryClient.invalidateQueries({ queryKey: ['paragraph', null] });
+        await queryClient.invalidateQueries({ queryKey: paragraphKey(null) });
       }
-      const currentParagraph = queryClient.getQueryData<Paragraph>(['paragraph', null]);
+      const currentParagraph = queryClient.getQueryData<Paragraph>(paragraphKey(null));
       fetchNextParagraph(currentParagraph?.id || '');
     },
     [queryClient, onClick, isMultiplayer, isStarted, fetchNextParagraph]

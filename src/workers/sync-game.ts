@@ -1,17 +1,15 @@
 'use client';
 import { selectRandomCarImage } from '@/lib/constants';
 import { useProfile } from '@/queries/use-profile';
-import { useGameStore } from '@/store/use-game-store';
+import { trackKey } from '@/queries/use-track';
+import { clearGame, switchMode, updateCarImage, useGameStore } from '@/store/use-game-store';
 import { useQueryClient } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 
 export const useSyncGame = () => {
-  const switchMode = useGameStore((state) => state.switchMode);
   const isMultiplayer = useGameStore((state) => state.isMultiplayer);
   const trackId = useGameStore((state) => state.trackId);
-  const clearGame = useGameStore((state) => state.clearGame);
-  const updateCarImage = useGameStore((state) => state.updateCarImage);
   const searchParams = useSearchParams();
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -20,7 +18,7 @@ export const useSyncGame = () => {
 
   useEffect(() => {
     if (pathname !== '/') clearGame();
-  }, [pathname, clearGame]);
+  }, [pathname]);
 
   useEffect(() => {
     if (isLoadingProfile) return;
@@ -30,7 +28,7 @@ export const useSyncGame = () => {
     }
     const carImage = selectRandomCarImage();
     updateCarImage(carImage);
-  }, [profile, isLoadingProfile, updateCarImage]);
+  }, [profile, isLoadingProfile]);
 
   useEffect(() => {
     const trackId = searchParams.get('track');
@@ -39,22 +37,22 @@ export const useSyncGame = () => {
     } else {
       switchMode({ isMultiplayer: false });
     }
-  }, [searchParams, switchMode]);
+  }, [searchParams]);
 
   useEffect(() => {
     clearGame();
     if (isMultiplayer) {
       router.replace(`/?track=${trackId}`);
     } else {
-      queryClient.removeQueries({ queryKey: ['track'] });
+      queryClient.removeQueries({ queryKey: trackKey });
       if (location.pathname === '/') {
         router.replace('/');
       }
     }
-  }, [isMultiplayer, clearGame, router, trackId, queryClient]);
+  }, [isMultiplayer, router, trackId, queryClient]);
 
   useEffect(() => {
     clearGame();
-  }, [trackId, clearGame]);
+  }, [trackId]);
   return null;
 };

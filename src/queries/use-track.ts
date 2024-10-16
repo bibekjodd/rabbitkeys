@@ -1,8 +1,10 @@
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
 import { useGameStore } from '@/store/use-game-store';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+
+export const trackKey = ['track'];
 
 export const useTrack = () => {
   const isStarted = useGameStore((state) => state.isStarted);
@@ -11,8 +13,8 @@ export const useTrack = () => {
   if (isStarted) refetchInterval = false;
 
   return useQuery({
-    queryKey: ['track'],
-    queryFn: () => fetchTrackData(trackId),
+    queryKey: trackKey,
+    queryFn: ({ signal }) => fetchTrackData({ signal, trackId }),
     enabled: !!trackId,
     refetchInterval,
     refetchIntervalInBackground: true,
@@ -21,13 +23,20 @@ export const useTrack = () => {
   });
 };
 
-export const fetchTrackData = async (trackId: string | null | undefined): Promise<Track> => {
+export const fetchTrackData = async ({
+  signal,
+  trackId
+}: {
+  trackId: string | null | undefined;
+  signal: AbortSignal | undefined;
+}): Promise<Track> => {
   if (!trackId) {
     throw new Error('Could not join track with invalid id');
   }
   try {
-    const { data } = await axios.get(`${backend_url}/api/tracks/${trackId}`, {
-      withCredentials: true
+    const { data } = await axios.get<{ track: Track }>(`${backendUrl}/api/tracks/${trackId}`, {
+      withCredentials: true,
+      signal
     });
     return data.track;
   } catch (error) {

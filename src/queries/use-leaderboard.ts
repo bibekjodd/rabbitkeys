@@ -1,21 +1,25 @@
-import { backend_url } from '@/lib/constants';
+import { backendUrl } from '@/lib/constants';
 import { extractErrorMessage } from '@/lib/utils';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
+export const leaderboardKey = ['leaderboard'];
+
 export const useLeaderboard = () => {
   return useQuery({
-    queryKey: ['leaderboard'],
+    queryKey: leaderboardKey,
     queryFn: fetchLeaderboard,
+    staleTime: 60_000,
     refetchOnMount: true
   });
 };
 
-const fetchLeaderboard = async (): Promise<Leaderboard> => {
+const fetchLeaderboard = async ({ signal }: { signal: AbortSignal }): Promise<Leaderboard> => {
   try {
-    const { data } = await axios.get(`${backend_url}/api/stats/leaderboard`, {
-      withCredentials: true
-    });
+    const { data } = await axios.get<{ leaderboard: Leaderboard }>(
+      `${backendUrl}/api/stats/leaderboard`,
+      { signal }
+    );
     return data.leaderboard;
   } catch (error) {
     throw new Error(extractErrorMessage(error));

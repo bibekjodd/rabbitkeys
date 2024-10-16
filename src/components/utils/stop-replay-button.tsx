@@ -1,4 +1,4 @@
-import { useReplayStore } from '@/store/use-replay-store';
+import { stopReplay, useReplayStore } from '@/store/use-replay-store';
 import React, { ButtonHTMLAttributes } from 'react';
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement>;
@@ -8,8 +8,8 @@ export default function StopReplayButton({ onClick, children, ...props }: Props)
   const isReplayReady = useReplayStore((state) => state.isReady);
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
-    onClick && onClick(e);
-    useReplayStore.getState().stop();
+    if (onClick) onClick(e);
+    stopReplay();
   };
 
   if (!isReplayStarted || isReplayReady) return null;

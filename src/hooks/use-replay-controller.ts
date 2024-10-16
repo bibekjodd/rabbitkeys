@@ -1,4 +1,10 @@
-import { useReplayStore } from '@/store/use-replay-store';
+import {
+  pauseReplay,
+  playReplay,
+  skipReplayBackward,
+  skipReplayForward,
+  useReplayStore
+} from '@/store/use-replay-store';
 import { useCallback, useEffect } from 'react';
 
 export const useReplayController = () => {
@@ -7,17 +13,17 @@ export const useReplayController = () => {
 
   const keyboardController = useCallback((e: KeyboardEvent) => {
     if (document.activeElement !== document.body) return;
-    const { skipBackward, skipForward, pause, isPaused, play } = useReplayStore.getState();
+    const { isPaused } = useReplayStore.getState();
     if (e.key === 'ArrowLeft') {
       e.preventDefault();
-      skipBackward();
+      skipReplayBackward();
     } else if (e.key === 'ArrowRight') {
       e.preventDefault();
-      skipForward();
+      skipReplayForward();
     } else if (e.key === ' ') {
       e.preventDefault();
-      if (isPaused) play();
-      else pause();
+      if (isPaused) playReplay();
+      else pauseReplay();
     }
   }, []);
 
