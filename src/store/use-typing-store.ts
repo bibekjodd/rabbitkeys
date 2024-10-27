@@ -1,5 +1,5 @@
 import { updateSpeed } from '@/lib/utils';
-import { create } from 'zustand';
+import { createStore } from '@jodd/snap';
 import { endGame, useGameStore } from './use-game-store';
 import { useLiveScore } from './use-live-score';
 import { updateReplaySnapshot, useReplayStore } from './use-replay-store';
@@ -29,7 +29,7 @@ interface TypingStore {
   updateTimelineIntervalRef: NodeJS.Timeout | null;
 }
 
-export const useTypingStore = create<TypingStore>(() => ({
+export const useTypingStore = createStore<TypingStore>(() => ({
   paragraph: null,
   previousParagraph: null,
   typedText: '',

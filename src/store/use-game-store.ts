@@ -7,7 +7,7 @@ import {
   updateTimeline,
   wait
 } from '@/lib/utils';
-import { create } from 'zustand';
+import { createStore } from '@jodd/snap';
 import { useLiveScore } from './use-live-score';
 import { stopReplay, useReplayStore } from './use-replay-store';
 import { clearTypingStore, useTypingStore } from './use-typing-store';
@@ -31,7 +31,7 @@ type State = {
   maxTimeoutRef: NodeJS.Timeout | null;
 };
 
-export const useGameStore = create<State>(() => ({
+export const useGameStore = createStore<State>(() => ({
   trackId: null,
   isMultiplayer: false,
   carImage: null,

@@ -1,5 +1,5 @@
 import { scrollIntoView, wait } from '@/lib/utils';
-import { create } from 'zustand';
+import { createStore } from '@jodd/snap';
 
 export type Snapshot = {
   letter: string;
@@ -24,7 +24,7 @@ interface ReplayStore {
   playDelayTimeoutRef: NodeJS.Timeout | null;
 }
 
-export const useReplayStore = create<ReplayStore>(() => ({
+export const useReplayStore = createStore<ReplayStore>(() => ({
   paragraph: null,
   data: [],
   currentIndex: 0,

@@ -1,4 +1,3 @@
-import Header from '@/components/layouts/header';
 import GlowingBackGround from '@/components/utils/glowing-background';
 import Invitation from '@/components/utils/invitation';
 import QueryProvider from '@/providers/query-provider';
@@ -42,10 +41,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className="dark">
-      <body
-        id="body"
-        className={`${inter.className} flex min-h-screen flex-col bg-neutral-900 text-white`}
-      >
+      <body id="body" className={`${inter.className}`}>
         <QueryProvider>
           <Toaster toastOptions={{ duration: 3000 }} closeButton richColors theme="dark" />
           <GlowingBackGround />
@@ -53,7 +49,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <Suspense>
             <Workers />
           </Suspense>
-          <Header />
           {children}
         </QueryProvider>
       </body>

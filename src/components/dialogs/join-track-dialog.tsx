@@ -16,9 +16,9 @@ import { useProfile } from '@/queries/use-profile';
 import { useGameStore } from '@/store/use-game-store';
 import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating } from '@tanstack/react-query';
+import { ClipboardListIcon, Loader2Icon, XIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { LuClipboardList, LuLoader2, LuX } from 'react-icons/lu';
 import { toast } from 'sonner';
 
 type Props = { children: React.ReactNode };
@@ -119,7 +119,7 @@ export function JoinTrackDialog({ children }: Props) {
                   onClick={() => setInput('')}
                   className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-200"
                 >
-                  <LuX className="h-4 w-4" />
+                  <XIcon className="h-4 w-4" />
                 </button>
               )}
             </div>
@@ -130,7 +130,7 @@ export function JoinTrackDialog({ children }: Props) {
               }}
               className="text-gray-400"
             >
-              <LuClipboardList className="h-6 w-6" />
+              <ClipboardListIcon className="size-6" />
             </button>
           </div>
           <p
@@ -159,7 +159,7 @@ export function JoinTrackDialog({ children }: Props) {
             <span className={`${isJoiningTrack ? 'opacity-0' : ''}`}>Join</span>
             {isJoiningTrack && (
               <span className="absolute inset-0 grid place-items-center">
-                <LuLoader2 className="h-4 w-4 animate-spin" />
+                <Loader2Icon className="size-4 animate-spin" />
               </span>
             )}
           </button>

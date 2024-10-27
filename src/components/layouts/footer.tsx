@@ -1,4 +1,4 @@
-import { FaGithub } from 'react-icons/fa';
+import { GithubIcon } from 'lucide-react';
 
 export default function Footer() {
   return (
@@ -11,7 +11,7 @@ export default function Footer() {
           rel="noopener noreferrer"
           className="group flex w-fit items-center"
         >
-          <FaGithub className="mr-1 h-5 w-5 text-white" />
+          <GithubIcon className="mr-1 h-5 w-5 text-white" />
           <span className="font-semibold text-neutral-100 group-hover:underline">@bibekjodd </span>
         </a>
       </p>

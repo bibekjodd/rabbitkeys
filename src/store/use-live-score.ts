@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { createStore } from '@jodd/snap';
 
 type Score = {
   playerId: string;
@@ -13,7 +13,7 @@ type Actions = {
   clear: () => void;
 };
 
-export const useLiveScore = create<State & Actions>((set, get) => ({
+export const useLiveScore = createStore<State & Actions>((set, get) => ({
   scores: [],
   updateScore(newScore) {
     const oldScores = [...get().scores];

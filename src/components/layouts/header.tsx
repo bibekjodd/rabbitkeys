@@ -3,10 +3,9 @@ import { backendUrl } from '@/lib/constants';
 import { robotoMono, rubikGlitch } from '@/lib/fonts';
 import { useProfile } from '@/queries/use-profile';
 import { useGameStore } from '@/store/use-game-store';
-import { User } from 'lucide-react';
+import { LogInIcon, User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LuLogIn } from 'react-icons/lu';
 import InviteKickPlayerDialog from '../dialogs/invite-kick-player-dialog';
 import { JoinTrackDialog } from '../dialogs/join-track-dialog';
 import ProfileDialog from '../dialogs/profile-dialog';
@@ -93,7 +92,7 @@ export default function Header() {
               className="flex h-10 items-center space-x-2 rounded-md border-2 border-transparent bg-black/50 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base"
             >
               <span>Login</span>
-              <LuLogIn className="h-5 w-5" />
+              <LogInIcon className="size-5" />
             </button>
           )}
 

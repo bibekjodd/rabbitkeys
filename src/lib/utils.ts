@@ -49,6 +49,7 @@ export const getUsername = (email: string) => {
 export const validateUrl = (url: string): URL | null => {
   try {
     return new URL(url);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return null;
   }

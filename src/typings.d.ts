@@ -17,18 +17,18 @@ type Paragraph = {
 };
 
 type PlayerState = {
-  id: string;
   name: string;
+  id: string;
   email: string;
-  image: string | null;
-  carImage: string;
   isFinished: boolean;
   lastSeen: string;
-  speed?: number;
-  topSpeed?: number;
-  duration?: number;
-  position?: number;
-  accuracy?: number;
+  position: number;
+  accuracy: number;
+  speed: number;
+  topSpeed: number;
+  duration: number;
+  image: string | null;
+  carImage: string;
 };
 
 type Track = {
