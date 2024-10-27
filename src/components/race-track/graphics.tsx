@@ -1,4 +1,5 @@
 import { flagImage } from '@/lib/constants';
+import { cn } from '@/lib/utils';
 import { useGameStore } from '@/store/use-game-store';
 import { useReplayStore } from '@/store/use-replay-store';
 
@@ -58,21 +59,23 @@ function BaseFlag({
       <img
         src={flagImage}
         alt="flag"
-        className={`absolute top-0 z-20 -translate-y-16 transition-all duration-1000 ${
-          countdown <= 0 || isStarted
-            ? 'left-full top-5 h-24 w-24 -translate-x-40 rotate-[20deg] -scale-x-100'
-            : 'left-1/2 h-64 w-64 -translate-x-[calc(50%-64px)]'
-        } `}
+        className={cn('absolute top-0 z-20 -translate-y-16 transition-all duration-1000', {
+          'left-full top-5 h-24 w-24 -translate-x-40 rotate-[20deg] -scale-x-100':
+            countdown <= 0 || isStarted,
+          '-translate-x-[calc(50%-64px)]0 left-1/2 h-64 w-64': !(countdown <= 0 || isStarted)
+        })}
       />
 
       <img
         src={flagImage}
         alt="flag"
-        className={`absolute top-0 z-20 transition-all duration-1000 ${
-          countdown <= 0 || isStarted
-            ? 'left-full top-1/2 h-24 w-24 -translate-x-40 translate-y-2 rotate-[20deg] -scale-x-100'
-            : 'left-1/2 h-64 w-64 -translate-x-[calc(50%+64px)] -translate-y-16 -scale-x-100'
-        } `}
+        className={cn('absolute top-0 z-20 transition-all duration-1000', {
+          'left-full top-1/2 h-24 w-24 -translate-x-40 translate-y-2 rotate-[20deg] -scale-x-100':
+            countdown <= 0 || isStarted,
+          'left-1/2 h-64 w-64 -translate-x-[calc(50%+64px)] -translate-y-16 -scale-x-100': !(
+            countdown <= 0 || isStarted
+          )
+        })}
       />
     </>
   );

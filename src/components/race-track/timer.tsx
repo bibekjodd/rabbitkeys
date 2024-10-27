@@ -1,5 +1,5 @@
 import { robotoMono } from '@/lib/fonts';
-import { formatDuration } from '@/lib/utils';
+import { cn, formatDuration } from '@/lib/utils';
 import { useGameStore } from '@/store/use-game-store';
 import { useReplayStore } from '@/store/use-replay-store';
 import { useTypingStore } from '@/store/use-typing-store';
@@ -14,7 +14,10 @@ export default function Timer() {
 
   return (
     <div
-      className={`flex h-12 items-center space-x-2.5 pl-3.5 text-gray-200 ${robotoMono.className}`}
+      className={cn(
+        robotoMono.className,
+        'flex h-12 items-center space-x-2.5 pl-3.5 text-gray-200'
+      )}
     >
       {!isReady && isStarted && (
         <>

@@ -1,6 +1,7 @@
 'use client';
 import { backendUrl } from '@/lib/constants';
 import { robotoMono, rubikGlitch } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
 import { useProfile } from '@/queries/use-profile';
 import { useGameStore } from '@/store/use-game-store';
 import { LogInIcon, User } from 'lucide-react';
@@ -26,14 +27,17 @@ export default function Header() {
       <header className="mx-auto flex w-full max-w-screen-xl items-center justify-between">
         <h1>
           <span
-            className={`${rubikGlitch.className} bg-gradient-to-r from-rose-600 via-pink-500 to-sky-500 bg-clip-text text-3xl text-transparent lg:text-4xl`}
+            className={cn(
+              rubikGlitch.className,
+              'bg-gradient-to-r from-rose-600 via-pink-500 to-sky-500 bg-clip-text text-3xl text-transparent lg:text-4xl'
+            )}
           >
             {pathname === '/' && 'Rabbit_keys'}
             {pathname !== '/' && <Link href="/">Rabbit_keys</Link>}
           </span>
         </h1>
 
-        <nav className={`${robotoMono.className} flex items-center space-x-3`}>
+        <nav className={cn(robotoMono.className, 'flex items-center space-x-3')}>
           <StartButton className="flex h-10 items-center rounded-md border-2 border-transparent bg-black/30 px-5 font-medium text-neutral-300 transition hover:border-neutral-300 hover:text-neutral-200 focus:border-neutral-300 focus:outline-none active:scale-90 lg:h-11 lg:px-6 lg:text-base">
             Start
           </StartButton>

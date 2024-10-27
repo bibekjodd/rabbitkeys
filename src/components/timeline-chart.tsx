@@ -14,7 +14,7 @@ export default function TimelineChart() {
   return (
     <section className="flex flex-col pl-12 pr-4">
       <h3 className="flex items-center space-x-4 pb-8 text-4xl font-bold text-slate-300/80">
-        <span className={`${robotoMono.className}`}>Typing Stats</span>
+        <span className={robotoMono.className}>Typing Stats</span>
         <AreaChart className="h-8 w-8" />
       </h3>
       {colorIndexes}
@@ -84,13 +84,8 @@ function Graph() {
     ];
   }, [timeline]);
 
-  const primaryAxis = useMemo((): AxisOptions<Data> => {
-    return { getValue: (data) => data.duration };
-  }, []);
-
-  const secondaryAxes = useMemo((): AxisOptions<Data>[] => {
-    return [{ getValue: (data) => data.value }];
-  }, []);
+  const primaryAxis: AxisOptions<Data> = { getValue: (data) => data.duration };
+  const secondaryAxes: AxisOptions<Data>[] = [{ getValue: (data) => data.value }];
 
   return (
     <div className="relative h-80 w-full">

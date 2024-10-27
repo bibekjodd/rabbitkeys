@@ -1,5 +1,6 @@
 import { useReplayController } from '@/hooks/use-replay-controller';
 import { useTimeout } from '@/hooks/use-timeout';
+import { cn } from '@/lib/utils';
 import { useGameStore } from '@/store/use-game-store';
 import { useReplayStore } from '@/store/use-replay-store';
 import { MoveLeft, MoveRight, Play, Space } from 'lucide-react';
@@ -89,9 +90,15 @@ function PreviewCurrentTyping() {
               return (
                 <div
                   key={i}
-                  className={`block flex-shrink-0 rounded-lg border border-gray-600 bg-black/30 p-2 text-4xl lg:p-4 lg:text-6xl ${snapshot.isTypedIncorrect ? 'text-rose-600' : 'text-white'} `}
+                  className={cn(
+                    'block flex-shrink-0 rounded-lg border border-gray-600 bg-black/30 p-2 text-4xl lg:p-4 lg:text-6xl',
+                    {
+                      'text-rose-600': snapshot.isTypedIncorrect,
+                      'text-white': !snapshot.isTypedIncorrect
+                    }
+                  )}
                 >
-                  {snapshot.typed === ' ' ? ' ' : snapshot.typed}
+                  {snapshot.typed}
                 </div>
               );
           })}

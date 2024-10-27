@@ -75,7 +75,7 @@ export default function UpdateProfileDialog({
           </div>
         </form>
 
-        <DialogFooter className={`${inter.className}`}>
+        <DialogFooter className={inter.className}>
           <DialogClose ref={closeButtonRef} asChild>
             <Button variant="outline">Close</Button>
           </DialogClose>

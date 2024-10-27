@@ -1,9 +1,10 @@
 'use client';
 import { roadStripes } from '@/components/utils/stripes';
+import { cn } from '@/lib/utils';
 import { useGameStore } from '@/store/use-game-store';
 import { useLiveScore } from '@/store/use-live-score';
 import { useReplayStore } from '@/store/use-replay-store';
-import { memo, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import MultiplayerProgress from './multiplayer-progress';
 import ReplayProgress from './replay-progress';
 import SingleplayerProgress from './singleplayer-progress';
@@ -33,7 +34,7 @@ type BasePlayerProgressProps = {
     progress?: number;
   };
 };
-export const BasePlayerProgress = memo(function Component({ player }: BasePlayerProgressProps) {
+export function BasePlayerProgress({ player }: BasePlayerProgressProps) {
   const isReady = useGameStore((state) => state.isReady);
   const isMultiplayerFinished = useGameStore((state) => state.isMultiplayerFinished);
   const isMultiplayer = useGameStore((state) => state.isMultiplayer);
@@ -71,13 +72,16 @@ export const BasePlayerProgress = memo(function Component({ player }: BasePlayer
     <div className={`relative flex h-16 flex-col justify-between sm:h-20`}>
       {roadStripes}
       <img
-        src={player?.carImage || ''}
+        src={player?.carImage || undefined}
         alt="player vehicle"
-        className={`absolute left-10 top-1/2 z-30 h-16 -translate-y-1/2 transition-all ${isReady ? 'duration-0' : 'duration-1000'} ${canStart && player.isFinished ? '' : ''} `}
+        className={cn('absolute left-10 top-1/2 z-30 h-16 -translate-y-1/2 transition-all', {
+          'duration-0': isReady,
+          'duration-1000': !isReady
+        })}
         style={{
           left: left + '%'
         }}
       />
     </div>
   );
-});
+}

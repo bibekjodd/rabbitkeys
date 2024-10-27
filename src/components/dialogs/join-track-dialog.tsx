@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger
 } from '@/components/ui/dialog';
-import { validateUrl } from '@/lib/utils';
+import { cn, validateUrl } from '@/lib/utils';
 import { createTrackKey } from '@/mutations/use-create-track';
 import { useJoinTrack } from '@/mutations/use-join-track';
 import { leaveTrackKey } from '@/mutations/use-leave-track';
@@ -18,7 +18,7 @@ import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating } from '@tanstack/react-query';
 import { ClipboardListIcon, Loader2Icon, XIcon } from 'lucide-react';
 import { usePathname } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 type Props = { children: React.ReactNode };
@@ -51,7 +51,7 @@ export function JoinTrackDialog({ children }: Props) {
     setTrackId(trackId);
   }, [input]);
 
-  const joinTrack = useCallback(() => {
+  const joinTrack = () => {
     if (isJoiningTrack) return;
     if (!trackId) {
       toast.dismiss();
@@ -70,7 +70,7 @@ export function JoinTrackDialog({ children }: Props) {
         }
       }
     );
-  }, [isJoiningTrack, mutate, trackId]);
+  };
 
   if (
     !profile ||
@@ -111,7 +111,10 @@ export function JoinTrackDialog({ children }: Props) {
                 type="text"
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
-                className={`w-full rounded-md border-2 border-neutral-300 bg-transparent p-2 pl-3 pr-6 ${isJoiningTrack ? 'opacity-50' : ''}`}
+                className={cn(
+                  'w-full rounded-md border-2 border-neutral-300 bg-transparent p-2 pl-3 pr-6',
+                  { 'opacity-50': isJoiningTrack }
+                )}
                 placeholder="Enter track id or link"
               />
               {input && (
@@ -134,7 +137,7 @@ export function JoinTrackDialog({ children }: Props) {
             </button>
           </div>
           <p
-            className={`text-sm font-medium text-rose-500 ${!trackId && input ? '' : 'opacity-0'}`}
+            className={cn('text-sm font-medium text-rose-500', { 'opacity-0': !trackId && input })}
           >
             {!trackId && input ? 'Invalid url' : ''}
           </p>
@@ -156,7 +159,7 @@ export function JoinTrackDialog({ children }: Props) {
             disabled={isJoiningTrack}
             className={`relative flex h-10 items-center rounded-md bg-white/80 px-6 font-semibold text-black transition active:scale-90 disabled:opacity-50`}
           >
-            <span className={`${isJoiningTrack ? 'opacity-0' : ''}`}>Join</span>
+            <span className={cn({ 'opacity-0': isJoiningTrack })}>Join</span>
             {isJoiningTrack && (
               <span className="absolute inset-0 grid place-items-center">
                 <Loader2Icon className="size-4 animate-spin" />

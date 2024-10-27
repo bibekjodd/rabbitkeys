@@ -1,5 +1,5 @@
 import { robotoMono } from '@/lib/fonts';
-import { formatDuration, getRankSuffix } from '@/lib/utils';
+import { cn, formatDuration, getRankSuffix } from '@/lib/utils';
 import { useProfile } from '@/queries/use-profile';
 import { useTrack } from '@/queries/use-track';
 import { useGameStore } from '@/store/use-game-store';
@@ -36,7 +36,7 @@ function Main() {
         </span>
       </div>
 
-      <table className={`${robotoMono.className} text-sm lg:text-base`}>
+      <table className={cn(robotoMono.className, 'text-sm lg:text-base')}>
         <tbody className="text-center">
           <tr className="h-20 border-y border-gray-600 text-gray-300">
             <th className="px-6 font-medium">Rank</th>
@@ -62,7 +62,11 @@ function Player({ player }: { player: PlayerState }) {
     <tr className="h-20 border-b border-gray-600">
       <td className="font-medium text-gray-200">{player.position}</td>
       <td className="min-w-20 px-6">
-        <img src={player.carImage!} alt="vehicle image" className="w-20 object-contain" />
+        <img
+          src={player.carImage || undefined}
+          alt="vehicle image"
+          className="w-20 object-contain"
+        />
       </td>
       <td className="px-6 text-gray-200 lg:px-12 xl:px-16">{player.name}</td>
       <td className="px-6 text-green-500 lg:px-12 xl:px-16">{Math.round(player.accuracy || 0)}%</td>

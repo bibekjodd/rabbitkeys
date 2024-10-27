@@ -1,4 +1,5 @@
 'use client';
+import { cn } from '@/lib/utils';
 import { Keyboard, MoveLeft, MoveRight, Space } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '../ui/button';
@@ -35,7 +36,10 @@ export default function KeyboardShortcutDialog() {
     <Dialog>
       <DialogTrigger asChild>
         <button
-          className={`fixed bottom-10 right-10 z-30 rounded-full bg-black/20 p-4 transition active:scale-90 ${showButton ? 'hidden lg:block' : 'hidden'}`}
+          className={cn(
+            'fixed bottom-10 right-10 z-30 rounded-full bg-black/20 p-4 transition active:scale-90',
+            { 'lg-block hidden': showButton, hidden: !showButton }
+          )}
         >
           <Keyboard className="h-6 w-6 text-neutral-300 hover:text-neutral-200" />
         </button>

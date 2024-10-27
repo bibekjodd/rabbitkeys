@@ -10,7 +10,7 @@ import { clearGame, startGame, useGameStore } from '@/store/use-game-store';
 import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
-import React, { ButtonHTMLAttributes, useCallback } from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 import { toast } from 'sonner';
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement>;
@@ -32,42 +32,30 @@ export default function StartButton({ onClick, children, ...props }: Props) {
   const pathname = usePathname();
   const isReplayStarted = useReplayStore((state) => state.isStarted);
 
-  const handleStartButtonClicked = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (onClick) onClick(e);
+  const handleStartButtonClicked = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (onClick) onClick(e);
+    toast.dismiss();
+    if (isStarted || isReady) {
       toast.dismiss();
-      if (isStarted || isReady) {
-        toast.dismiss();
-        toast.info('Game has already started');
-        return;
-      }
-      clearGame();
+      toast.info('Game has already started');
+      return;
+    }
+    clearGame();
 
-      // startGame single player
-      if (!isMultiplayer) {
-        await startGame();
-        fetchNextParagraph(paragraph?.id || '');
-        return;
-      }
+    // startGame single player
+    if (!isMultiplayer) {
+      await startGame();
+      fetchNextParagraph(paragraph?.id || '');
+      return;
+    }
 
-      // startGame multiplayer
-      if (!track?.id) {
-        toast.error('Join the track first to start the race');
-        return;
-      }
-      startMultiplayer(track.id);
-    },
-    [
-      isMultiplayer,
-      isReady,
-      isStarted,
-      onClick,
-      paragraph,
-      startMultiplayer,
-      track,
-      fetchNextParagraph
-    ]
-  );
+    // startGame multiplayer
+    if (!track?.id) {
+      toast.error('Join the track first to start the race');
+      return;
+    }
+    startMultiplayer(track.id);
+  };
 
   if (
     isStarted ||

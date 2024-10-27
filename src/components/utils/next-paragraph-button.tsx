@@ -9,7 +9,7 @@ import { useGameStore } from '@/store/use-game-store';
 import { useReplayStore } from '@/store/use-replay-store';
 import { useIsMutating, useQueryClient } from '@tanstack/react-query';
 import { usePathname } from 'next/navigation';
-import React, { ButtonHTMLAttributes, useCallback } from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 
 type NextParagraphButtonProps = ButtonHTMLAttributes<HTMLButtonElement>;
 export default function NextParagraphButton({
@@ -32,20 +32,17 @@ export default function NextParagraphButton({
   const isReplayReady = useReplayStore((state) => state.isReady);
   const isReplayStarted = useReplayStore((state) => state.isStarted);
 
-  const handleButtonClicked = useCallback(
-    async (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (onClick) onClick(e);
-      if (isMultiplayer || isStarted) return;
-      const nextParagraph = queryClient.getQueryData(paragraphKey('next'));
-      if (nextParagraph) queryClient.setQueryData(paragraphKey(null), nextParagraph);
-      else {
-        await queryClient.invalidateQueries({ queryKey: paragraphKey(null) });
-      }
-      const currentParagraph = queryClient.getQueryData<Paragraph>(paragraphKey(null));
-      fetchNextParagraph(currentParagraph?.id || '');
-    },
-    [queryClient, onClick, isMultiplayer, isStarted, fetchNextParagraph]
-  );
+  const handleButtonClicked = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    if (onClick) onClick(e);
+    if (isMultiplayer || isStarted) return;
+    const nextParagraph = queryClient.getQueryData(paragraphKey('next'));
+    if (nextParagraph) queryClient.setQueryData(paragraphKey(null), nextParagraph);
+    else {
+      await queryClient.invalidateQueries({ queryKey: paragraphKey(null) });
+    }
+    const currentParagraph = queryClient.getQueryData<Paragraph>(paragraphKey(null));
+    fetchNextParagraph(currentParagraph?.id || '');
+  };
 
   if (
     isReady ||

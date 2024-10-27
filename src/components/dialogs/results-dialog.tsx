@@ -1,5 +1,6 @@
 'use client';
 import { robotoMono } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
 import { useResults } from '@/queries/use-results';
 import React from 'react';
 import { Button } from '../ui/button';
@@ -34,7 +35,7 @@ export default function ResultsDialog({ children }: Props) {
 
         <div className="max-h-96 w-full overflow-y-auto pr-4">
           {!isLoading && results.length > 0 && (
-            <table className={`text-center ${robotoMono.className} w-full text-sm`}>
+            <table className={cn('text-cneter w-full text-sm', robotoMono.className)}>
               <tbody>
                 <tr>
                   <th className="px-4 py-2">Mode</th>

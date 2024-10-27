@@ -1,3 +1,5 @@
+import { cn } from '@/lib/utils';
+
 export default function BaseParagraph({
   isFocused,
   isStarted,
@@ -16,7 +18,14 @@ export default function BaseParagraph({
       {(paragraph?.text || '').split('').map((letter, i) => (
         <span
           key={i}
-          className={` ${letter === ' ' ? 'px-1' : 'px-[0.9px]'} ${isStarted && isFocused && letterIndex === i && isTypedIncorrect ? 'bg-rose-600 text-white' : ''} ${isStarted && isFocused && letterIndex === i && !isTypedIncorrect ? 'bg-sky-600 text-white' : ''} `}
+          className={cn({
+            'px-1': letter === ' ',
+            'px-[0.9px]': letter !== ' ',
+            'bg-rose-600 text-white':
+              isStarted && isFocused && letterIndex === i && isTypedIncorrect,
+            'bg-sky-600 text-white':
+              isStarted && isFocused && letterIndex === i && !isTypedIncorrect
+          })}
         >
           {letter}
         </span>

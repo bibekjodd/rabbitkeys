@@ -1,6 +1,6 @@
 'use client';
 import { robotoMono } from '@/lib/fonts';
-import { formatDuration } from '@/lib/utils';
+import { cn, formatDuration } from '@/lib/utils';
 import { useGameStore } from '@/store/use-game-store';
 import { useTypingStore } from '@/store/use-typing-store';
 import TimelineChart from './timeline-chart';
@@ -26,7 +26,10 @@ function Main() {
   const previousParagraph = useTypingStore((state) => state.previousParagraph);
   return (
     <section
-      className={`mx-auto flex flex-wrap justify-between pt-20 text-gray-400 ${robotoMono.className}`}
+      className={cn(
+        robotoMono.className,
+        'mx-auto flex flex-wrap justify-between pt-20 text-gray-400'
+      )}
       id="stats"
     >
       <div className="flex flex-col p-3 lg:p-4">

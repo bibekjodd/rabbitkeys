@@ -1,5 +1,6 @@
 'use client';
 import { robotoMono } from '@/lib/fonts';
+import { cn } from '@/lib/utils';
 import { useLeaderboard } from '@/queries/use-leaderboard';
 import { LineChart } from 'lucide-react';
 import React, { useState } from 'react';
@@ -15,7 +16,7 @@ export default function Page() {
           <span>All time Leaderboard</span>
           <LineChart className="h-6 w-6" />
         </h3>
-        <table className={`${robotoMono.className} w-full overflow-x-auto text-sm lg:text-base`}>
+        <table className={cn(robotoMono.className, 'w-full overflow-x-auto text-sm lg:text-base')}>
           <tbody className="text-center">
             <tr className="h-20 border-y border-gray-600 text-gray-300">
               <th className="px-4 font-medium">Rank</th>
@@ -58,7 +59,11 @@ function Player({ details, rank }: { rank: number; details: Leaderboard[number] 
     <tr className="h-20 border-b border-gray-600">
       <td className="font-medium text-gray-200">{rank}</td>
       <td>
-        <img src={user.carImage!} alt="vehicle image" className="mx-auto w-20 object-contain" />
+        <img
+          src={user.carImage || undefined}
+          alt="vehicle image"
+          className="mx-auto w-20 object-contain"
+        />
       </td>
       <td className="text-gray-200">{user.name}</td>
       <td className="text-green-500">{Math.round(accuracy)}%</td>

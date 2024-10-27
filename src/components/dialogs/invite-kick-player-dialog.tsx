@@ -1,4 +1,5 @@
 import { useDebounce } from '@/hooks/use-debounce';
+import { cn } from '@/lib/utils';
 import { invitePlayerKey, useInvitePlayer } from '@/mutations/use-invite-player';
 import { kickPlayerKey, useKickPlayer } from '@/mutations/use-kick-player';
 import { startRaceKey } from '@/mutations/use-start-race';
@@ -191,7 +192,7 @@ function Player({
   return (
     <div className="flex items-center">
       <div className="flex flex-grow items-center space-x-2">
-        <img src={player.image || ''} alt="player image" className="h-8 w-8 rounded-full" />
+        <img src={player.image || undefined} alt="player image" className="h-8 w-8 rounded-full" />
         <span className="text-sm font-medium text-neutral-100">{player.name}</span>
       </div>
 
@@ -201,7 +202,7 @@ function Player({
           onClick={handleOnInvite}
           className="relative h-8 rounded-md bg-sky-600 px-3 text-sm disabled:opacity-50"
         >
-          <span className={`${isInvitingPlayer ? 'opacity-0' : ''} text-neutral-100`}>Invite</span>
+          <span className={cn('text-neutral-100', { 'opacity-0': isInvitingPlayer })}>Invite</span>
           {isInvitingPlayer && (
             <span className="absolute inset-0 grid place-items-center">
               <Loader2 className="h-4 w-4 animate-spin text-white" />
@@ -214,9 +215,12 @@ function Player({
         <button
           onClick={handleOnKick}
           disabled={isCreator ? isKickingPlayer : isJoined}
-          className={`relative h-8 rounded-md px-3 text-sm disabled:opacity-50 ${isCreator ? 'bg-rose-600' : 'bg-sky-600'} `}
+          className={cn('relative h-8 rounded-md px-3 text-sm disabled:opacity-50', {
+            'bg-rose-600': isCreator,
+            'bg-sky-600': !isCreator
+          })}
         >
-          <span className={`${isKickingPlayer ? 'opacity-0' : ''}`}>
+          <span className={cn({ 'opacity-0': isKickingPlayer })}>
             {isCreator ? 'Kick' : 'Joined'}
           </span>
           {isKickingPlayer && (

@@ -1,6 +1,6 @@
 'use client';
 import { robotoMono } from '@/lib/fonts';
-import { scrollIntoView, wait } from '@/lib/utils';
+import { cn, scrollIntoView, wait } from '@/lib/utils';
 import { nextParagraphKey } from '@/mutations/use-next-paragraph';
 import { usePostResult } from '@/mutations/use-post-result';
 import { paragraphKey, useParagraph } from '@/queries/use-paragraph';
@@ -92,7 +92,10 @@ export default function Paragraph() {
         {graphics}
         <section
           onClick={() => document.getElementById('paragraph-input')?.focus()}
-          className={`${robotoMono.className} relative mx-auto flex min-h-28 max-w-screen-lg flex-col whitespace-pre-wrap rounded-md bg-white/80 p-4 pb-14 shadow-2xl shadow-white/30 filter backdrop-blur-3xl focus:outline-none`}
+          className={cn(
+            robotoMono.className,
+            'relative mx-auto flex min-h-28 max-w-screen-lg flex-col whitespace-pre-wrap rounded-md bg-white/80 p-4 pb-14 shadow-2xl shadow-white/30 filter backdrop-blur-3xl focus:outline-none'
+          )}
           id="paragraph"
         >
           {!isReplayStarted && (
@@ -173,7 +176,10 @@ const graphics = (
     {new Array(300).fill('empty').map((_, i) => (
       <div
         key={i}
-        className={`aspect-square -skew-y-2 rounded-sm ${i % 2 === 0 ? 'bg-black' : 'bg-white'}`}
+        className={cn('aspect-square -skew-y-2 rounded-sm', {
+          'bg-black': i % 2 === 0,
+          'bg-white': i % 2 !== 0
+        })}
       />
     ))}
   </div>

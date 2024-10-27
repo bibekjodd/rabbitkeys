@@ -1,6 +1,6 @@
 'use client';
+import { cn } from '@/lib/utils';
 import { useGameStore } from '@/store/use-game-store';
-import React from 'react';
 
 export default function GlowingBackGround() {
   const isReady = useGameStore((state) => state.isReady);
@@ -13,7 +13,11 @@ export default function GlowingBackGround() {
         ))}
       </div>
       <div
-        className={`fixed inset-0 -z-10 transition-all ${isReady ? 'bg-black/60' : ''} ${isStarted ? 'bg-black/70' : ''} ${!isReady && !isStarted ? 'bg-black/80' : ''} `}
+        className={cn('fixed inset-0 -z-10 transition-all', {
+          'bg-black/60': isReady,
+          'bg-black/70': isStarted,
+          'bg-black/80': !isReady && !isStarted
+        })}
       />
       <div className="fixed inset-0 -z-20 overflow-hidden">
         <div className="relative grid h-full w-full">
